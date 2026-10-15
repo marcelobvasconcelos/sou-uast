@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, BookOpen, Users, Compass, Award } from 'lucide-react';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface AboutSectionProps {
   title?: string;
@@ -53,7 +54,7 @@ export default function AboutSection({
         <div className="xl:col-span-5 relative">
             <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-ufrpe-blue-900">
               <Image
-                src={imageUrl || '/images/banners/sobre-uast.svg'}
+                src={getAssetUrl(imageUrl || '/images/banners/sobre-uast.svg')}
                 alt="Apresentação institucional do projeto SOU+UAST"
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"

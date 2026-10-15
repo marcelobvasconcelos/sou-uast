@@ -23,6 +23,7 @@ import {
 import FileUploadInput from '@/components/admin/FileUploadInput';
 import { TeamMemberData } from '@/types';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getAssetUrl } from '@/lib/api-client';
 import { getApiUrl } from '@/lib/api-client';
 
 interface TeamManagerProps {
@@ -327,7 +328,7 @@ export default function TeamManager({
                     <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-ufrpe-blue-200 flex-shrink-0 bg-slate-100 shadow-sm flex items-center justify-center">
                       {member.photoUrl ? (
                         <Image
-                          src={member.photoUrl}
+                          src={getAssetUrl(member.photoUrl)}
                           alt={member.name}
                           fill
                           sizes="64px"
@@ -487,7 +488,7 @@ export default function TeamManager({
                     <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-ufrpe-blue-600 shadow-md bg-white flex items-center justify-center flex-shrink-0">
                       {editingMember.photoUrl ? (
                         <Image
-                          src={editingMember.photoUrl}
+                          src={getAssetUrl(editingMember.photoUrl)}
                           alt="Pré-visualização da foto"
                           fill
                           sizes="112px"

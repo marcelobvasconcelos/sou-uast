@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Award, Users, GraduationCap, ShieldCheck } from 'lucide-react';
 import { TeamMemberData } from '@/types';
+import { getAssetUrl } from '@/lib/api-client';
 
 /**
  * JUSTIFICATIVA DE POSICIONAMENTO DA SEÇÃO DE EQUIPE:
@@ -133,7 +134,7 @@ export default function TeamSection({
                   >
                     {member.photoUrl ? (
                       <Image
-                        src={member.photoUrl}
+                        src={getAssetUrl(member.photoUrl)}
                         alt={`Foto de ${member.name}`}
                         fill
                         sizes="(max-width: 640px) 128px, 144px"

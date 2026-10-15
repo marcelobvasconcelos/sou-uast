@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
+import { getAssetUrl } from '@/lib/api-client';
 import {
   LayoutDashboard,
   Newspaper,
@@ -65,7 +66,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <Link href="/admin" className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-white p-1 flex items-center justify-center flex-shrink-0">
               <Image
-                src="/images/logo-sou-uast.svg"
+                src={getAssetUrl('/images/logo-sou-uast.svg')}
                 alt="SOU+UAST"
                 width={36}
                 height={36}

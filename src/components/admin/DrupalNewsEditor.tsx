@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getAssetUrl } from '@/lib/api-client';
 import {
   Save,
   Eye,
@@ -549,7 +550,7 @@ export default function DrupalNewsEditor({ initialData, isEditing = false }: Dru
               {formData.featuredImage && (
                 <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden bg-gray-100 shadow-md">
                   <Image
-                    src={formData.featuredImage}
+                    src={getAssetUrl(formData.featuredImage)}
                     alt={formData.title}
                     fill
                     className="object-cover"

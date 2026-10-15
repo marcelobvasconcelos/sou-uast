@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
 
   if (!isInternal && forceHttps && forwardedProto === 'http') {
     const httpsUrl = new URL(fullPath + request.nextUrl.search, `https://${host}`);
-    return NextResponse.redirect(httpsUrl, 301);
+    return NextResponse.redirect(httpsUrl, 307);
   }
 
   const response = NextResponse.next();
@@ -30,6 +30,13 @@ export function middleware(request: NextRequest) {
   }
   if (forwardedProto) {
     response.headers.set('X-Forwarded-Proto', forwardedProto);
+  }
+
+  // Prevenir cache agressivo de rotas HTML dinâmicas nos navegadores dos usuários
+  if (!request.nextUrl.pathname.includes('.')) {
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
   }
 
   return response;

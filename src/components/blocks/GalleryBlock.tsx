@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { X, ZoomIn } from 'lucide-react';
 import { GalleryBlockContent, GalleryItem } from '@/types';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface GalleryBlockProps {
   content: string; // JSON string com GalleryBlockContent
@@ -60,7 +61,7 @@ export default function GalleryBlock({ content, settings }: GalleryBlockProps) {
             aria-label={`Ampliar imagem: ${img.alt || img.caption || 'Foto da galeria'}`}
           >
             <Image
-              src={img.url}
+              src={getAssetUrl(img.url)}
               alt={img.alt || 'Foto da galeria'}
               fill
               sizes="(max-width: 768px) 50vw, 33vw"
@@ -103,7 +104,7 @@ export default function GalleryBlock({ content, settings }: GalleryBlockProps) {
 
             <div className="relative w-full aspect-[16/10] max-h-[75vh] rounded-lg overflow-hidden bg-black">
               <Image
-                src={activeImage.url}
+                src={getAssetUrl(activeImage.url)}
                 alt={activeImage.alt || 'Imagem ampliada'}
                 fill
                 className="object-contain"

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
 import { ImageBlockContent } from '@/types';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface ImageBlockProps {
   content: string; // JSON string ou URL direta
@@ -48,7 +49,7 @@ export default function ImageBlock({ content, settings }: ImageBlockProps) {
   const imageElement = (
     <div className="relative aspect-[16/9] w-full rounded-xl overflow-hidden shadow-md bg-gray-100 group">
       <Image
-        src={data.url}
+        src={getAssetUrl(data.url)}
         alt={data.alt || 'Imagem da página'}
         fill
         sizes="(max-width: 1024px) 100vw, 900px"

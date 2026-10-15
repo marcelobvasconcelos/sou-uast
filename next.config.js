@@ -1,4 +1,4 @@
-let rawBasePath = process.env.BASE_PATH || '';
+let rawBasePath = process.env.BASE_PATH || process.env.NEXT_PUBLIC_BASE_PATH || '';
 if (rawBasePath.startsWith('http://') || rawBasePath.startsWith('https://')) {
   try {
     const parsed = new URL(rawBasePath);
@@ -35,6 +35,7 @@ const nextConfig = {
         '172.16.68.50:97',
         '172.16.68.50',
         'www.uast.ufrpe.br',
+        'uast.ufrpe.br',
         'soumais.uast.ufrpe.br',
         ...(process.env.PUBLIC_BASE_URL ? [process.env.PUBLIC_BASE_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '')] : []),
         ...(process.env.NEXTAUTH_URL ? [process.env.NEXTAUTH_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '')] : []),

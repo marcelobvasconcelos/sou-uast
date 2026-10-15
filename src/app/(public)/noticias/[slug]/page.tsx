@@ -7,6 +7,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import { prisma } from '@/lib/prisma';
 import { formatDate, estimateReadingTime } from '@/lib/utils';
 import { Metadata } from 'next';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface NewsDetailPageProps {
   params: {
@@ -134,7 +135,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           <figure className="my-8 rounded-2xl overflow-hidden shadow-lg bg-gray-100 border border-gray-200">
             <div className="relative aspect-[16/9] w-full">
               <Image
-                src={news.featuredImage}
+                src={getAssetUrl(news.featuredImage)}
                 alt={news.title}
                 fill
                 priority
@@ -200,7 +201,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 >
                   <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-gray-100 mb-3">
                     <Image
-                      src={item.featuredImage || '/images/news/noticia-1.svg'}
+                      src={getAssetUrl(item.featuredImage || '/images/news/noticia-1.svg')}
                       alt=""
                       fill
                       className="object-cover group-hover:scale-105 transition"

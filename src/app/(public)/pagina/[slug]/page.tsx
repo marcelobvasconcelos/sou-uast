@@ -5,6 +5,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import BlockRenderer from '@/components/blocks/BlockRenderer';
 import { prisma } from '@/lib/prisma';
 import { Metadata } from 'next';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface PageDynamicProps {
   params: {
@@ -64,7 +65,7 @@ export default async function PageDynamic({ params }: PageDynamicProps) {
         {page.bannerImage && (
           <div className="relative aspect-[21/9] sm:aspect-[24/9] w-full rounded-xl overflow-hidden shadow mb-8 bg-gray-100">
             <Image
-              src={page.bannerImage}
+              src={getAssetUrl(page.bannerImage)}
               alt={page.title}
               fill
               priority

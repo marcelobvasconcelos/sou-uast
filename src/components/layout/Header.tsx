@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Newspaper, GraduationCap, Info, CalendarCheck, Home } from 'lucide-react';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface HeaderProps {
   siteName?: string;
@@ -47,7 +48,7 @@ export default function Header({
             >
               <div className="relative h-12 w-44 sm:h-14 sm:w-52">
                 <Image
-                  src={logoSouUast || '/images/logo-sou-uast.svg'}
+                  src={getAssetUrl(logoSouUast || '/images/logo-sou-uast.svg')}
                   alt="Logotipo do Projeto de Extensão SOU+UAST"
                   fill
                   sizes="(max-width: 640px) 176px, 208px"
@@ -64,11 +65,11 @@ export default function Header({
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:block focus:outline-none focus:ring-2 focus:ring-ufrpe-green-700 rounded-md p-1 transition"
-              title="Acessar o portal oficial da UAST/UFRPE (abre em nova aba)"
+              title="Acessar o portal oficial da UAST/UFRPE (site institucional externo - abre em nova aba)"
             >
               <div className="relative h-11 w-36 sm:h-12 sm:w-44">
                 <Image
-                  src={logoUfrpe || '/images/logo-ufrpe.svg'}
+                  src={getAssetUrl(logoUfrpe || '/images/logo-ufrpe.svg')}
                   alt="Logotipo institucional da UAST / UFRPE"
                   fill
                   sizes="176px"

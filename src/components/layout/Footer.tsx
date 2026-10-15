@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Instagram, Facebook, Youtube, MapPin, Phone, Mail, ShieldCheck, ExternalLink, ArrowUp } from 'lucide-react';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface FooterProps {
   settings?: {
@@ -73,7 +74,7 @@ export default function Footer({ settings }: FooterProps) {
           <div className="space-y-4">
             <div className="bg-white p-3 rounded-lg shadow-inner inline-block max-w-[260px]">
               <Image
-                src={settings?.logoSouUast || '/images/logo-sou-uast.svg'}
+                src={getAssetUrl(settings?.logoSouUast || '/images/logo-sou-uast.svg')}
                 alt="Logo do Projeto SOU+UAST"
                 width={220}
                 height={55}

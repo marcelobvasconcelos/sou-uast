@@ -27,7 +27,7 @@ import FileUploadInput from './FileUploadInput';
 import BlockRenderer from '@/components/blocks/BlockRenderer';
 import { slugify } from '@/lib/utils';
 import { getApiErrorMessage } from '@/lib/api-errors';
-import { getApiUrl } from '@/lib/api-client';
+import { getApiUrl, getAssetUrl } from '@/lib/api-client';
 
 interface PageBlocksEditorProps {
   pageId?: string;
@@ -610,7 +610,7 @@ export default function PageBlocksEditor({
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
                               {galData.images.map((img, imgIdx) => (
                                 <div key={imgIdx} className="relative aspect-video rounded border overflow-hidden group">
-                                  <img src={getApiUrl(img.url)} alt="" className="w-full h-full object-cover" />
+                                  <img src={getAssetUrl(img.url)} alt="" className="w-full h-full object-cover" />
                                   <button
                                     type="button"
                                     onClick={() => {
@@ -725,7 +725,7 @@ export default function PageBlocksEditor({
               {subtitle && <p className="text-lg text-gray-600 italic">{subtitle}</p>}
               {bannerImage && (
                 <div className="relative aspect-[21/9] w-full rounded-xl overflow-hidden bg-gray-100">
-                  <img src={getApiUrl(bannerImage)} alt="" className="w-full h-full object-cover" />
+                  <img src={getAssetUrl(bannerImage)} alt="" className="w-full h-full object-cover" />
                 </div>
               )}
               <BlockRenderer blocks={blocks} />

@@ -4,7 +4,7 @@
  * quanto sob subpastas com Next.js basePath (ex: /soumaisuast).
  */
 
-let rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+let rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH || process.env.BASE_PATH || '';
 if (rawBasePath.startsWith('http://') || rawBasePath.startsWith('https://')) {
   try {
     rawBasePath = new URL(rawBasePath).pathname;
@@ -28,3 +28,28 @@ export function getApiUrl(path: string): string {
   }
   return path;
 }
+
+/**
+ * Adiciona o prefixo do basePath a qualquer imagem ou asset estático se necessário.
+ * Preserva URLs externas absolutas (http/https), data URLs e blob URLs.
+ * Exemplo:
+ * - getAssetUrl('/images/logo.svg') -> '/soumaisuast/images/logo.svg' (se BASE_PATH="/soumaisuast")
+ * - getAssetUrl('/api/uploads/img.jpg') -> '/soumaisuast/api/uploads/img.jpg' (se BASE_PATH="/soumaisuast")
+ */
+export function getAssetUrl(path: string | null | undefined): string {
+  if (!path) return '';
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('data:') ||
+    path.startsWith('blob:')
+  ) {
+    return path;
+  }
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  if (BASE_PATH && !cleanPath.startsWith(BASE_PATH)) {
+    return `${BASE_PATH}${cleanPath}`;
+  }
+  return cleanPath;
+}
+

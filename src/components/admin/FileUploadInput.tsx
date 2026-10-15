@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { UploadCloud, CheckCircle2, AlertCircle, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { getApiUrl } from '@/lib/api-client';
+import { getApiUrl, getAssetUrl } from '@/lib/api-client';
 
 interface FileUploadInputProps {
   label: string;
@@ -164,7 +164,7 @@ export default function FileUploadInput({
         {preview ? (
           <div className="relative w-full aspect-[16/9] max-h-64 rounded-lg overflow-hidden bg-black/5 group">
             <Image
-              src={preview}
+              src={getAssetUrl(preview)}
               alt="Pré-visualização da imagem"
               fill
               unoptimized

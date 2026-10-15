@@ -6,6 +6,7 @@ import Breadcrumb from '@/components/layout/Breadcrumb';
 import { prisma } from '@/lib/prisma';
 import { formatDate, estimateReadingTime } from '@/lib/utils';
 import { Metadata } from 'next';
+import { getAssetUrl } from '@/lib/api-client';
 
 export const metadata: Metadata = {
   title: 'Notícias & Comunicados',
@@ -137,7 +138,7 @@ export default async function NoticiasPage({ searchParams }: NoticiasPageProps) 
                   aria-hidden="true"
                 >
                   <Image
-                    src={item.featuredImage || '/images/news/noticia-1.svg'}
+                    src={getAssetUrl(item.featuredImage || '/images/news/noticia-1.svg')}
                     alt=""
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

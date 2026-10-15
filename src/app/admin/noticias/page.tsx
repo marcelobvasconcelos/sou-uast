@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import { formatDate } from '@/lib/utils';
+import { getAssetUrl } from '@/lib/api-client';
 import {
   Newspaper,
   Plus,
@@ -80,7 +81,7 @@ export default async function AdminNewsPage() {
                       <div className="relative aspect-video w-20 rounded bg-gray-100 overflow-hidden border">
                         {item.featuredImage ? (
                           <Image
-                            src={item.featuredImage}
+                            src={getAssetUrl(item.featuredImage)}
                             alt=""
                             fill
                             className="object-cover"

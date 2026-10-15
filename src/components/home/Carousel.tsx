@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ChevronLeft, ChevronRight, Pause, Play, Clock, Calendar } from 'lucide-react';
 import { formatDate, estimateReadingTime } from '@/lib/utils';
 import { NewsCardData } from '@/types';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface CarouselProps {
   slides: NewsCardData[];
@@ -103,7 +104,7 @@ export default function Carousel({ slides }: CarouselProps) {
         {/* Imagem de Capa com Otimização */}
         <div className="absolute inset-0">
           <Image
-            src={currentSlide.featuredImage || '/images/news/noticia-1.svg'}
+            src={getAssetUrl(currentSlide.featuredImage || '/images/news/noticia-1.svg')}
             alt={`Imagem de capa da notícia: ${currentSlide.title}`}
             fill
             priority={currentIndex === 0}

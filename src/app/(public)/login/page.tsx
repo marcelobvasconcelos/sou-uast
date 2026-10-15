@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Lock, Mail, AlertCircle, Loader2, ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
+import { getAssetUrl } from '@/lib/api-client';
 
 function LoginForm() {
   const router = useRouter();
@@ -55,7 +56,7 @@ function LoginForm() {
       <div className="text-center space-y-3">
         <Link href="/" className="inline-block p-2 rounded-lg hover:bg-slate-50 transition">
           <Image
-            src="/images/logo-sou-uast.svg"
+            src={getAssetUrl('/images/logo-sou-uast.svg')}
             alt="Logo SOU+UAST"
             width={220}
             height={55}

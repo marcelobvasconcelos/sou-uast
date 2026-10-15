@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Calendar, ArrowRight, Newspaper } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { NewsCardData } from '@/types';
+import { getAssetUrl } from '@/lib/api-client';
 
 interface RecentNewsProps {
   news: NewsCardData[];
@@ -51,7 +52,7 @@ export default function RecentNews({ news }: RecentNewsProps) {
                 aria-hidden="true"
               >
                 <Image
-                  src={item.featuredImage || '/images/news/noticia-1.svg'}
+                  src={getAssetUrl(item.featuredImage || '/images/news/noticia-1.svg')}
                   alt=""
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
