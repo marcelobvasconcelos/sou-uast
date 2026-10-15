@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
+  <defs>
+    <linearGradient id="gradUfrpe" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#003366" />
+      <stop offset="100%" stop-color="#001a33" />
+    </linearGradient>
+  </defs>
+  <!-- Brasão Minimalista UFRPE -->
+  <g transform="translate(10, 10)">
+    <polygon points="30,2 56,16 56,44 30,58 4,44 4,16" fill="url(#gradUfrpe)" stroke="#006633" stroke-width="2"/>
+    <!-- Elementos do Brasão: Espiga e Livro -->
+    <path d="M 20 40 L 30 20 L 40 40 Z" fill="#ffffff" opacity="0.9"/>
+    <circle cx="30" cy="20" r="3.5" fill="#facc15" />
+    <path d="M 23 44 Q 30 40 37 44" stroke="#ffffff" stroke-width="2" fill="none"/>
+  </g>
+  <!-- Tipografia UAST / UFRPE -->
+  <text x="76" y="34" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="22" fill="#003366">
+    UAST <tspan font-weight="400" font-size="16" fill="#006633">| UFRPE</tspan>
+  </text>
+  <text x="76" y="49" font-family="system-ui, -apple-system, sans-serif" font-weight="500" font-size="9" fill="#374151">
+    UNIDADE ACADÊMICA DE SERRA TALHADA
+  </text>
+  <text x="76" y="60" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="8" fill="#6b7280" letter-spacing="0.5">
+    UNIVERSIDADE FEDERAL RURAL DE PERNAMBUCO
+  </text>
+</svg>

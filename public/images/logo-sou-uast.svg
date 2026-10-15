@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <linearGradient id="gradSou" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003366" />
+      <stop offset="100%" stop-color="#006633" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Símbolo Estilizado -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#gradSou)" filter="url(#shadow)"/>
+    <!-- Ícone de Livro Aberto / Pessoas / Sol do Sertão -->
+    <path d="M 16 38 C 22 34, 28 35, 30 44 C 32 35, 38 34, 44 38 L 44 24 C 38 20, 32 21, 30 27 C 28 21, 22 20, 16 24 Z" fill="#ffffff" />
+    <circle cx="30" cy="18" r="4" fill="#facc15" />
+    <!-- Cruz / Mais representando extensão universitária -->
+    <rect x="42" y="10" width="12" height="4" rx="2" fill="#4ade80" />
+    <rect x="46" y="6" width="4" height="12" rx="2" fill="#4ade80" />
+  </g>
+  <!-- Tipografia do Projeto -->
+  <text x="82" y="38" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="28" fill="#003366" letter-spacing="-0.5">
+    SOU<tspan fill="#006633">+</tspan><tspan fill="#004791">UAST</tspan>
+  </text>
+  <text x="84" y="56" font-family="system-ui, -apple-system, sans-serif" font-weight="600" font-size="10.5" fill="#4b5563" letter-spacing="1.2">
+    PROJETO DE EXTENSÃO • UFRPE
+  </text>
+</svg>

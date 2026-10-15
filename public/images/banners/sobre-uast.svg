@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="gradSobre" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003366" />
+      <stop offset="100%" stop-color="#006633" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#gradSobre)" rx="24"/>
+  <g transform="translate(100, 150)">
+    <circle cx="300" cy="80" r="70" fill="#facc15" fill-opacity="0.2"/>
+    <path d="M 230 190 C 270 140, 330 140, 370 190 Z" fill="#ffffff" fill-opacity="0.9"/>
+    <circle cx="300" cy="110" r="30" fill="#ffffff" fill-opacity="0.9"/>
+    <text x="300" y="270" font-family="system-ui, sans-serif" font-weight="900" font-size="36" fill="#ffffff" text-anchor="middle">
+      SOU+UAST
+    </text>
+    <text x="300" y="310" font-family="system-ui, sans-serif" font-weight="600" font-size="18" fill="#4ade80" text-anchor="middle">
+      Universidade Pública &amp; Comunidade
+    </text>
+  </g>
+</svg>

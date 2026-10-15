@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sou_uast_postgres_prod
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres_sou_password
+      POSTGRES_DB: sou_uast_db
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sou_uast_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sou_uast_prod_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sou_uast_app_prod
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "97:3000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres_sou_password@db:5432/sou_uast_db?schema=public"
+      NEXTAUTH_URL: "http://172.16.68.50:97"
+      NEXTAUTH_SECRET: "c8d9e2b145a9f248e3e4827d9284cf651873ea7b32810f2d9526efc689437190"
+      UPLOAD_DIR: "/app/uploads"
+      ADMIN_INITIAL_NAME: "Administrador SOU+UAST"
+      ADMIN_INITIAL_EMAIL: "admin@ufrpe.br"
+      ADMIN_INITIAL_PASSWORD: "Admin@SouUast2025"
+      EDITOR_INITIAL_NAME: "Editor de Conteúdo UAST"
+      EDITOR_INITIAL_EMAIL: "editor@ufrpe.br"
+      EDITOR_INITIAL_PASSWORD: "Editor@SouUast2025"
+      MAX_UPLOAD_SIZE_MB: 15
+    volumes:
+      - uploads_prod_data:/app/uploads
+    networks:
+      - sou_uast_prod_net
+
+volumes:
+  postgres_prod_data:
+    name: sou_uast_postgres_prod_data
+  uploads_prod_data:
+    name: sou_uast_uploads_prod_data
+
+networks:
+  sou_uast_prod_net:
+    name: sou_uast_prod_net
+    driver: bridge

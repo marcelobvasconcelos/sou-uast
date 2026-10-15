@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#006633" />
+      <stop offset="50%" stop-color="#004d26" />
+      <stop offset="100%" stop-color="#003366" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bgGrad2)" />
+  <g opacity="0.12">
+    <circle cx="200" cy="500" r="260" fill="#ffffff" />
+    <circle cx="850" cy="180" r="140" fill="#ffffff" />
+  </g>
+  <g transform="translate(80, 160)">
+    <rect width="1040" height="350" rx="20" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-width="2" stroke-opacity="0.2"/>
+    <rect x="50" y="50" width="180" height="36" rx="18" fill="#003366" />
+    <text x="140" y="74" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#ffffff" text-anchor="middle">EXTENSÃO UAST</text>
+    <text x="50" y="150" font-family="system-ui, sans-serif" font-weight="900" font-size="44" fill="#ffffff">
+      Mais de 1.200 Estudantes Conectados ao Ensino Superior
+    </text>
+    <text x="50" y="210" font-family="system-ui, sans-serif" font-weight="500" font-size="24" fill="#e2e8f0">
+      Oficinas itinerantes do SOU+UAST percorrem cidades do Sertão do Pajeú
+    </text>
+    <g transform="translate(50, 260)">
+      <rect width="200" height="46" rx="8" fill="#4ade80" />
+      <text x="100" y="29" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#00381c" text-anchor="middle">VER RELATÓRIO →</text>
+    </g>
+  </g>
+</svg>

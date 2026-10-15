@@ -1,0 +1,195 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum BlockType {
+  RICH_TEXT
+  IMAGE
+  VIDEO
+  GALLERY
+  HTML
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(EDITOR)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  news      News[]
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+model News {
+  id            String        @id @default(cuid())
+  title         String
+  slug          String        @unique
+  summary       String        @db.Text
+  content       String        @db.Text
+  featuredImage String?
+  isFeatured    Boolean       @default(false)
+  status        ContentStatus @default(DRAFT)
+  publishedAt   DateTime      @default(now())
+  viewsCount    Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  authorId      String
+  author        User          @relation(fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([status, publishedAt])
+  @@index([isFeatured, status])
+  @@map("news")
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  slug      String     @unique
+  order     Int        @default(0)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  menuItems MenuItem[]
+
+  @@map("categories")
+}
+
+model Page {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  subtitle    String?
+  bannerImage String?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  blocks      PageBlock[]
+  menuItems   MenuItem[]
+
+  @@map("pages")
+}
+
+model PageBlock {
+  id        String    @id @default(cuid())
+  pageId    String
+  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      BlockType @default(RICH_TEXT)
+  order     Int       @default(0)
+  content   String    @db.Text
+  settings  String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([pageId, order])
+  @@map("page_blocks")
+}
+
+model MenuItem {
+  id           String     @id @default(cuid())
+  title        String
+  url          String?
+  pageId       String?
+  page         Page?      @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  categoryId   String?
+  category     Category?  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  parentId     String?
+  parent       MenuItem?  @relation("MenuHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children     MenuItem[] @relation("MenuHierarchy")
+  order        Int        @default(0)
+  isActive     Boolean    @default(true)
+  openInNewTab Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([categoryId, order])
+  @@index([parentId, order])
+  @@map("menu_items")
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  imageUrl  String
+  linkUrl   String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("banners")
+}
+
+model SiteSetting {
+  id                       String   @id @default("site_settings")
+  siteName                 String   @default("SOU+UAST")
+  siteSubtitle             String   @default("Projeto de Extensão - UAST / UFRPE")
+  logoSouUast              String?
+  logoUfrpe                String?
+  primaryColor             String   @default("#003366")
+  secondaryColor           String   @default("#006633")
+  aboutTitle               String   @default("Sobre o Projeto SOU+UAST")
+  aboutText                String   @db.Text
+  aboutButtonText          String   @default("Conheça mais sobre o projeto")
+  aboutButtonUrl           String   @default("/pagina/sobre-o-projeto")
+  aboutImageUrl            String?
+  footerAddress            String   @db.Text
+  footerPhone              String   @default("(87) 3831-2900 / 3831-2910")
+  footerEmail              String   @default("contato.sou@uast.ufrpe.br")
+  footerSocialInstagram    String   @default("https://www.instagram.com/ufrpe/")
+  footerSocialFacebook     String   @default("https://www.facebook.com/ufrpeoficial/")
+  footerSocialYoutube      String   @default("https://www.youtube.com/@ufrpeoficial")
+  footerInstitutionalLinks String   @db.Text
+  footerAccessibilityText  String   @default("Este portal segue as diretrizes do Modelo de Acessibilidade em Governo Eletrônico (e-MAG) e WCAG 2.1 nível AA.")
+  footerCopyright          String   @default("© SOU+UAST - Unidade Acadêmica de Serra Talhada - Universidade Federal Rural de Pernambuco. Todos os direitos reservados.")
+  lgpdNotice               String   @db.Text
+  iframeWhitelist          String   @db.Text
+  maxUploadSizeMb          Int      @default(15)
+  updatedAt                DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  userName   String?
+  userEmail  String?
+  action     String   // CREATE, UPDATE, DELETE, PUBLISH, UNPUBLISH, LOGIN
+  entityType String   // Noticia, Pagina, Menu, Categoria, Banner, Usuario, Configuracoes
+  entityId   String?
+  details    String?  @db.Text
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([entityType])
+  @@map("audit_logs")
+}

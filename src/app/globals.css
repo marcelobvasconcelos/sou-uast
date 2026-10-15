@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-scale: 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  html.text-size-sm {
+    font-size: 14px;
+  }
+
+  html.text-size-base {
+    font-size: 16px;
+  }
+
+  html.text-size-lg {
+    font-size: 18px;
+  }
+
+  html.text-size-xl {
+    font-size: 20px;
+  }
+
+  /* Indicador de Foco Acessível (WCAG 2.4.7) */
+  *:focus-visible {
+    outline: 3px solid #e5a823 !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Modo Alto Contraste (e-MAG / WCAG 2.1 AA) */
+html.high-contrast,
+html.high-contrast body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.high-contrast header,
+html.high-contrast nav,
+html.high-contrast footer,
+html.high-contrast aside,
+html.high-contrast main,
+html.high-contrast article,
+html.high-contrast section,
+html.high-contrast div {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #facc15 !important;
+}
+
+html.high-contrast a {
+  color: #facc15 !important;
+  text-decoration: underline !important;
+}
+
+html.high-contrast a:hover,
+html.high-contrast a:focus {
+  color: #38bdf8 !important;
+}
+
+html.high-contrast button {
+  background-color: #000000 !important;
+  color: #facc15 !important;
+  border: 2px solid #facc15 !important;
+}
+
+html.high-contrast input,
+html.high-contrast select,
+html.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #facc15 !important;
+}
+
+html.high-contrast img {
+  filter: contrast(120%);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}

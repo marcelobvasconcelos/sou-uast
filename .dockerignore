@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.gitignore
+README.md
+.env
+.env*.local
+uploads
+public/uploads
+_legado_reservas
+.qodo
+Dockerfile*
+docker-compose*.yml
