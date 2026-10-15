@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { getAssetUrl } from '@/lib/api-client';
+import { getAssetUrl, BASE_PATH } from '@/lib/api-client';
 import {
   LayoutDashboard,
   Newspaper,
@@ -135,7 +135,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <ExternalLink className="w-3 h-3 text-slate-400" />
             </Link>
             <button
-              onClick={() => signOut({ callbackUrl: '/' })}
+              onClick={() => signOut({ callbackUrl: BASE_PATH ? `${BASE_PATH}/login` : '/login' })}
               className="p-1.5 bg-red-600/80 hover:bg-red-600 text-white rounded transition"
               title="Encerrar Sessão"
             >
@@ -181,7 +181,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               Ver Site Público ↗
             </Link>
             <button
-              onClick={() => signOut({ callbackUrl: '/' })}
+              onClick={() => signOut({ callbackUrl: BASE_PATH ? `${BASE_PATH}/login` : '/login' })}
               className="text-red-400 font-semibold"
             >
               Sair

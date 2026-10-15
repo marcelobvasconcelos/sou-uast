@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Sun, Moon, ZoomIn, ZoomOut, Lock, UserCheck, LogOut, LayoutDashboard } from 'lucide-react';
+import { BASE_PATH } from '@/lib/api-client';
 
 export default function AccessibilityBar() {
   const { data: session, status } = useSession();
@@ -182,7 +183,7 @@ export default function AccessibilityBar() {
                   <span className="sm:hidden">Painel</span>
                 </Link>
                 <button
-                  onClick={() => signOut({ callbackUrl: '/' })}
+                  onClick={() => signOut({ callbackUrl: BASE_PATH ? `${BASE_PATH}/` : '/' })}
                   className="text-slate-300 hover:text-white p-0.5 rounded focus:ring-2 focus:ring-yellow-400 focus:outline-none"
                   title="Sair do sistema"
                   aria-label="Sair"

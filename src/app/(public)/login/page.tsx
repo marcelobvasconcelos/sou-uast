@@ -5,8 +5,8 @@ import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Lock, Mail, AlertCircle, Loader2, ArrowLeft, KeyRound, CheckCircle2 } from 'lucide-react';
-import { getAssetUrl } from '@/lib/api-client';
+import { Lock, Mail, AlertCircle, Loader2, ArrowLeft, KeyRound } from 'lucide-react';
+import { getAssetUrl, BASE_PATH } from '@/lib/api-client';
 
 function LoginForm() {
   const router = useRouter();
@@ -30,18 +30,21 @@ function LoginForm() {
     setIsLoading(true);
 
     try {
+      const targetUrl = callbackUrl.startsWith('/') && BASE_PATH && !callbackUrl.startsWith(BASE_PATH)
+        ? `${BASE_PATH}${callbackUrl}`
+        : callbackUrl;
+
       const res = await signIn('credentials', {
         redirect: false,
         email: email.trim(),
         password,
-        callbackUrl,
+        callbackUrl: targetUrl,
       });
 
       if (res?.error) {
         setErrorMessage(res.error || 'Credenciais inválidas. Verifique os dados digitados.');
       } else if (res?.ok) {
-        router.push(callbackUrl);
-        router.refresh();
+        window.location.href = targetUrl;
       }
     } catch {
       setErrorMessage('Ocorreu um erro inesperado ao conectar ao servidor.');
@@ -135,22 +138,6 @@ function LoginForm() {
           )}
         </button>
       </form>
-
-      {/* Informações de Demonstração / Seed para Avaliação */}
-      <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs text-slate-600">
-        <p className="font-bold text-ufrpe-blue-900 flex items-center gap-1.5">
-          <CheckCircle2 className="w-3.5 h-3.5 text-ufrpe-green-600" />
-          <span>Credenciais Pré-configuradas (Seed):</span>
-        </p>
-        <div className="space-y-1 font-mono text-[11px] bg-white p-2.5 rounded border border-gray-200">
-          <div>
-            <strong className="text-gray-800">Admin:</strong> admin@ufrpe.br | Admin@SouUast2025
-          </div>
-          <div>
-            <strong className="text-gray-800">Editor:</strong> editor@ufrpe.br | Editor@SouUast2025
-          </div>
-        </div>
-      </div>
 
       <div className="text-center">
         <Link

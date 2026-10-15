@@ -3,49 +3,39 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { prisma } from './prisma';
 
-// Detectar protocolo e host públicos
-const publicUrl =
-  process.env.PUBLIC_BASE_URL ||
-  process.env.NEXTAUTH_URL ||
-  process.env.AUTH_URL ||
-  'http://localhost:3000';
-
-const isHttps = publicUrl.startsWith('https://');
-
-// Configuração dinâmica de cookies de sessão:
-// 1. Em HTTP puro (como o IP interno http://172.16.68.50:97), secure DEVE ser false para que o navegador não descarte o cookie.
-// 2. Quando a STI configurar o proxy reverso com certificado TLS/HTTPS, secure se torna true automaticamente.
-const useSecureCookies = isHttps;
-const cookiePrefix = useSecureCookies ? '__Secure-' : '';
-const hostPrefix = useSecureCookies ? '__Host-' : '';
+// Resolver basePath configurado (ex: '/soumaisuast')
+const rawBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || process.env.BASE_PATH || '').replace(/\/+$/, '');
+const authBasePath = rawBasePath === '/' || !rawBasePath ? '' : (rawBasePath.startsWith('/') ? rawBasePath : `/${rawBasePath}`);
 
 export const authOptions: AuthOptions = {
-  useSecureCookies,
+  // Desativar prefixos restritivos __Host- e __Secure- para garantir compatibilidade
+  // com acesso via IP direto HTTP (http://172.16.68.50:97) e via proxy reverso HTTPS (https://www.uast.ufrpe.br)
+  useSecureCookies: false,
   cookies: {
     sessionToken: {
-      name: `${cookiePrefix}next-auth.session-token`,
+      name: 'next-auth.session-token',
       options: {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: useSecureCookies,
+        secure: false,
       },
     },
     callbackUrl: {
-      name: `${cookiePrefix}next-auth.callback-url`,
+      name: 'next-auth.callback-url',
       options: {
         sameSite: 'lax',
         path: '/',
-        secure: useSecureCookies,
+        secure: false,
       },
     },
     csrfToken: {
-      name: `${hostPrefix}next-auth.csrf-token`,
+      name: 'next-auth.csrf-token',
       options: {
         httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: useSecureCookies,
+        secure: false,
       },
     },
   },
@@ -122,14 +112,45 @@ export const authOptions: AuthOptions = {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      // Se for URL relativa começando com '/'
+      if (url.startsWith('/')) {
+        if (authBasePath && url.startsWith(authBasePath)) {
+          return `${baseUrl}${url}`;
+        }
+        return `${baseUrl}${authBasePath}${url}`;
+      }
+
+      // Se for URL absoluta
+      try {
+        const parsedUrl = new URL(url);
+        const parsedBase = new URL(baseUrl);
+        const hostMatches =
+          parsedUrl.host === parsedBase.host ||
+          parsedUrl.host.replace(/^www\./, '') === parsedBase.host.replace(/^www\./, '');
+
+        if (hostMatches) {
+          if (authBasePath && !parsedUrl.pathname.startsWith(authBasePath)) {
+            parsedUrl.pathname = `${authBasePath}${parsedUrl.pathname}`;
+          }
+          return parsedUrl.toString();
+        }
+      } catch {}
+
+      // Fallback padrão: direciona para o painel administrativo da aplicação
+      if (authBasePath) {
+        return `${baseUrl}${authBasePath}/admin`;
+      }
+      return `${baseUrl}/admin`;
+    },
   },
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 dias
   },
   pages: {
-    signIn: '/login',
-    error: '/login',
+    signIn: authBasePath ? `${authBasePath}/login` : '/login',
+    error: authBasePath ? `${authBasePath}/login` : '/login',
   },
   secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-sou-uast-institutional-key-2025',
 };
