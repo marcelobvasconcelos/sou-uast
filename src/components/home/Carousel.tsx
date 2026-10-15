@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Pause, Play, Clock, Calendar } from 'lucide-react';
-import { formatDate, estimateReadingTime } from '@/lib/utils';
+import { ChevronLeft, ChevronRight, Pause, Play, Calendar } from 'lucide-react';
+import { formatDate } from '@/lib/utils';
 import { NewsCardData } from '@/types';
 import { getAssetUrl } from '@/lib/api-client';
 
@@ -101,7 +101,7 @@ export default function Carousel({ slides }: CarouselProps) {
         className="block relative aspect-[16/9] sm:aspect-[21/9] min-h-[380px] sm:min-h-[440px] w-full focus:outline-none focus:ring-4 focus:ring-yellow-400 group"
         title={`Abrir notícia: ${currentSlide.title}`}
       >
-        {/* Imagem de Capa com Otimização */}
+        {/* Imagem de Capa com Otimização e Brilho Natural */}
         <div className="absolute inset-0">
           <Image
             src={getAssetUrl(currentSlide.featuredImage || '/images/news/noticia-1.svg')}
@@ -110,51 +110,35 @@ export default function Carousel({ slides }: CarouselProps) {
             priority={currentIndex === 0}
             loading={currentIndex === 0 ? 'eager' : 'lazy'}
             sizes="(max-width: 1280px) 100vw, 1280px"
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out brightness-90"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         </div>
 
-        {/* Gradiente Escuro para Garantir Alto Contraste com o Texto (WCAG AA) */}
+        {/* Gradiente Suave apenas na base para legibilidade sem cobrir a imagem */}
         <div
-          className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-28 sm:h-36 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none"
           aria-hidden="true"
         />
 
-        {/* Conteúdo Sobreposto */}
-        <div className="absolute bottom-0 inset-x-0 p-6 sm:p-10 text-white z-10 max-w-4xl space-y-3">
-          {/* Tag de Destaque + Metadados */}
-          <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full font-bold bg-ufrpe-green-600 text-white shadow-sm uppercase tracking-wider text-[11px]">
+        {/* Conteúdo Sobreposto Discreto na Base (ênfase na imagem) */}
+        <div className="absolute bottom-0 inset-x-0 p-4 sm:p-6 text-white z-10 max-w-3xl space-y-1.5 pr-28 sm:pr-32">
+          {/* Tag de Destaque + Metadados Compactos */}
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="inline-flex items-center px-2 py-0.5 rounded font-bold bg-ufrpe-green-700/90 text-white shadow-sm uppercase tracking-wider text-[10px]">
               Destaque
             </span>
-            <span className="flex items-center gap-1.5 text-slate-300">
-              <Calendar className="w-3.5 h-3.5 text-ufrpe-green-400" />
+            <span className="flex items-center gap-1 text-slate-300 text-xs">
+              <Calendar className="w-3 h-3 text-ufrpe-green-400" />
               <time dateTime={new Date(currentSlide.publishedAt).toISOString()}>
                 {formatDate(currentSlide.publishedAt)}
               </time>
             </span>
-            <span className="flex items-center gap-1.5 text-slate-300">
-              <Clock className="w-3.5 h-3.5 text-yellow-400" />
-              <span>{estimateReadingTime(currentSlide.summary)}</span>
-            </span>
           </div>
 
-          {/* Título da Notícia */}
-          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white group-hover:text-yellow-300 transition-colors duration-200 line-clamp-2 sm:line-clamp-3">
+          {/* Título da Notícia Compacto e Discreto */}
+          <h2 className="text-sm sm:text-base md:text-lg font-bold tracking-tight text-white group-hover:text-yellow-300 transition-colors line-clamp-2 leading-snug drop-shadow-sm">
             {currentSlide.title}
           </h2>
-
-          {/* Resumo da Notícia */}
-          <p className="text-sm sm:text-base text-slate-200 line-clamp-2 max-w-3xl leading-relaxed">
-            {currentSlide.summary}
-          </p>
-
-          {/* Chamada para Ação */}
-          <div className="pt-2">
-            <span className="inline-flex items-center text-xs sm:text-sm font-semibold text-yellow-300 group-hover:underline">
-              Ler notícia completa →
-            </span>
-          </div>
         </div>
       </Link>
 
