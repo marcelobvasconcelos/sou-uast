@@ -105,7 +105,7 @@ export default async function HomePage() {
     <div className="space-y-12">
       {/* 1. Carrossel de Destaques no Topo (até 3 notícias) */}
       {featuredNews.length > 0 && (
-        <section className="pt-4 sm:pt-6 px-4 sm:px-6 lg:px-8">
+        <section aria-label="Notícias em Destaque">
           <Carousel slides={featuredNews} />
         </section>
       )}

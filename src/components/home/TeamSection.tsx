@@ -80,12 +80,12 @@ export default function TeamSection({
 
   return (
     <section
-      className="py-16 bg-white border-t border-gray-200"
+      className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8"
       aria-labelledby="team-section-heading"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div>
         {/* Cabeçalho da Seção */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-ufrpe-green-50 text-ufrpe-green-700 border border-ufrpe-green-200 mb-3">
             <Users className="w-3.5 h-3.5" />
             <span>Quem Faz Acontecer</span>
@@ -108,7 +108,7 @@ export default function TeamSection({
         </div>
 
         {/* Grade Responsiva com Fotos Circulares Perfeitas */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {sortedMembers.map((member) => {
             const isCoord = (member.projectRole || '').toLowerCase().includes('coordena');
             const badgeClass = getBadgeStyle(member.projectRole);

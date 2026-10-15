@@ -47,11 +47,10 @@ export default function AboutSection({
   ];
 
   return (
-    <section className="py-16 bg-slate-50 border-t border-b border-gray-200" aria-labelledby="about-section-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Lado Esquerdo: Imagem / Banner Ilustrativo */}
-          <div className="lg:col-span-5 relative">
+    <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10" aria-labelledby="about-section-heading">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 lg:gap-10 items-center">
+        {/* Lado Esquerdo: Imagem / Banner Ilustrativo */}
+        <div className="xl:col-span-5 relative">
             <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-lg border-4 border-white bg-ufrpe-blue-900">
               <Image
                 src={imageUrl || '/images/banners/sobre-uast.svg'}
@@ -70,7 +69,7 @@ export default function AboutSection({
           </div>
 
           {/* Lado Direito: Texto Institucional e Destaques */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="xl:col-span-7 space-y-6">
             <div className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-ufrpe-blue-100 text-ufrpe-blue-800">
               Conheça Nossa Missão
             </div>
@@ -113,7 +112,6 @@ export default function AboutSection({
             </div>
           </div>
         </div>
-      </div>
     </section>
   );
 }

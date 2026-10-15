@@ -49,8 +49,12 @@ export default function CascadeSidebar({ categories, currentSlug }: CascadeSideb
     }));
   };
 
+  const activeSlug =
+    currentSlug ||
+    (pathname.startsWith('/pagina/') ? pathname.replace('/pagina/', '') : undefined);
+
   const isItemActive = (item: MenuItemData) => {
-    if (item.pageSlug && currentSlug === item.pageSlug) return true;
+    if (item.pageSlug && activeSlug === item.pageSlug) return true;
     if (item.url && pathname === item.url) return true;
     if (item.pageSlug && pathname === `/pagina/${item.pageSlug}`) return true;
     return false;

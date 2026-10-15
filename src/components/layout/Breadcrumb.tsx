@@ -5,12 +5,16 @@ import { BreadcrumbItem } from '@/types';
 
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
+  className?: string;
 }
 
-export default function Breadcrumb({ items }: BreadcrumbProps) {
+export default function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
-    <nav aria-label="Navegação estrutural (Breadcrumb)" className="py-3 px-4 bg-gray-50 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto flex items-center flex-wrap text-xs md:text-sm text-gray-600 gap-1.5">
+    <nav
+      aria-label="Navegação estrutural (Breadcrumb)"
+      className={className || "py-2.5 px-4 bg-white rounded-xl border border-gray-200 shadow-sm"}
+    >
+      <div className="flex items-center flex-wrap text-xs md:text-sm text-gray-600 gap-1.5">
         <Link
           href="/"
           className="flex items-center gap-1 hover:text-ufrpe-blue-800 transition focus:outline-none focus:ring-1 focus:ring-ufrpe-blue-700 rounded px-1"

@@ -80,7 +80,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   });
 
   return (
-    <div>
+    <div className="space-y-6">
       <Breadcrumb
         items={[
           { label: 'Notícias', href: '/noticias' },
@@ -88,7 +88,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
         ]}
       />
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <article className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-10">
         {/* Cabeçalho da Notícia */}
         <header className="space-y-4 mb-8">
           <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-gray-500">
@@ -191,7 +191,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
             <h2 className="text-2xl font-bold text-ufrpe-blue-900 mb-6">
               Outras Notícias da UAST
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {relatedNews.map((item) => (
                 <Link
                   key={item.id}

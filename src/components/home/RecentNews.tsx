@@ -15,30 +15,29 @@ export default function RecentNews({ news }: RecentNewsProps) {
   }
 
   return (
-    <section className="py-12 bg-white" aria-labelledby="recent-news-heading">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Cabeçalho da Seção */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b-2 border-ufrpe-blue-800 gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-ufrpe-green-700 font-bold text-sm uppercase tracking-wider mb-1">
-              <Newspaper className="w-4 h-4" />
-              <span>Acontece no SOU+UAST</span>
-            </div>
-            <h2 id="recent-news-heading" className="text-2xl sm:text-3xl font-extrabold text-ufrpe-blue-900">
-              Notícias Recentes &amp; Comunicados
-            </h2>
+    <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8" aria-labelledby="recent-news-heading">
+      {/* Cabeçalho da Seção */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 pb-4 border-b-2 border-ufrpe-blue-800 gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-ufrpe-green-700 font-bold text-sm uppercase tracking-wider mb-1">
+            <Newspaper className="w-4 h-4" />
+            <span>Acontece no SOU+UAST</span>
           </div>
-          <Link
-            href="/noticias"
-            className="inline-flex items-center gap-2 text-sm font-bold text-ufrpe-blue-800 hover:text-ufrpe-green-700 transition focus:outline-none focus:ring-2 focus:ring-ufrpe-blue-700 rounded px-2 py-1"
-          >
-            <span>Ver todas as notícias</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <h2 id="recent-news-heading" className="text-2xl sm:text-3xl font-extrabold text-ufrpe-blue-900">
+            Notícias Recentes &amp; Comunicados
+          </h2>
         </div>
+        <Link
+          href="/noticias"
+          className="inline-flex items-center gap-2 text-sm font-bold text-ufrpe-blue-800 hover:text-ufrpe-green-700 transition focus:outline-none focus:ring-2 focus:ring-ufrpe-blue-700 rounded px-2 py-1"
+        >
+          <span>Ver todas as notícias</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
 
-        {/* Grid de Cards de Notícias */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {/* Grid de Cards de Notícias */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {news.map((item) => (
             <article
               key={item.id}
@@ -101,7 +100,6 @@ export default function RecentNews({ news }: RecentNewsProps) {
             </article>
           ))}
         </div>
-      </div>
     </section>
   );
 }

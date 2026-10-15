@@ -83,7 +83,7 @@ export default function Carousel({ slides }: CarouselProps) {
 
   return (
     <section
-      className="relative w-full max-w-7xl mx-auto rounded-2xl overflow-hidden shadow-xl bg-slate-900 border border-slate-800"
+      className="relative w-full rounded-2xl overflow-hidden shadow-xl bg-slate-900 border border-slate-800"
       aria-roledescription="carrossel"
       aria-label="Notícias em destaque do SOU+UAST"
       onMouseEnter={() => setIsInteracting(true)}
