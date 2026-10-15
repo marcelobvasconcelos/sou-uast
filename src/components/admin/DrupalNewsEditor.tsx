@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import FileUploadInput from './FileUploadInput';
 import { slugify, formatDate, estimateReadingTime } from '@/lib/utils';
+import { getApiErrorMessage } from '@/lib/api-errors';
 import { ContentStatus } from '@prisma/client';
 
 interface NewsFormData {
@@ -158,10 +159,9 @@ export default function DrupalNewsEditor({ initialData, isEditing = false }: Dru
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Ocorreu um erro ao salvar a notícia.');
+        const errorMsg = await getApiErrorMessage(res, 'Ocorreu um erro ao salvar a notícia.');
+        throw new Error(errorMsg);
       }
 
       setSaveSuccess(true);
@@ -172,6 +172,9 @@ export default function DrupalNewsEditor({ initialData, isEditing = false }: Dru
       }, 1000);
     } catch (err: any) {
       setErrorMessage(err.message || 'Falha ao salvar a notícia no servidor.');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } finally {
       setIsSaving(false);
     }
@@ -227,9 +230,20 @@ export default function DrupalNewsEditor({ initialData, isEditing = false }: Dru
 
       {/* Alertas de Sucesso ou Erro */}
       {errorMessage && (
-        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 flex-shrink-0 text-red-600" />
-          <span>{errorMessage}</span>
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+          <div className="flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 flex-shrink-0 text-red-600" />
+            <span className="font-medium">{errorMessage}</span>
+          </div>
+          {errorMessage.includes('sessão expirou') && (
+            <button
+              type="button"
+              onClick={() => router.push('/login?callbackUrl=' + encodeURIComponent(window.location.pathname))}
+              className="px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold whitespace-nowrap self-start sm:self-auto transition"
+            >
+              Fazer Login Novamente
+            </button>
+          )}
         </div>
       )}
 

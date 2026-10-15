@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { Role } from '@prisma/client';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 interface UserItem {
   id: string;
@@ -89,10 +90,8 @@ export default function UsersManager({
         body: JSON.stringify(editingUser),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao salvar usuário.');
+        throw new Error(await getApiErrorMessage(res, 'Erro ao salvar usuário.'));
       }
 
       setModalOpen(false);
@@ -117,14 +116,13 @@ export default function UsersManager({
         method: 'DELETE',
       });
 
-      if (res.ok) {
-        router.refresh();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao excluir usuário.');
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao excluir usuário.'));
       }
-    } catch {
-      alert('Falha na comunicação.');
+
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha na comunicação com o servidor.');
     }
   };
 

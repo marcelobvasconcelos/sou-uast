@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import FileUploadInput from '@/components/admin/FileUploadInput';
 import { TeamMemberData } from '@/types';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 interface TeamManagerProps {
   initialMembers: TeamMemberData[];
@@ -142,9 +143,8 @@ export default function TeamManager({
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao salvar membro da equipe.');
+        throw new Error(await getApiErrorMessage(res, 'Erro ao salvar membro da equipe.'));
       }
 
       setModalOpen(false);
@@ -173,9 +173,8 @@ export default function TeamManager({
       const res = await fetch(`/api/admin/team?id=${member.id}`, {
         method: 'DELETE',
       });
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao remover membro.');
+        throw new Error(await getApiErrorMessage(res, 'Erro ao remover membro.'));
       }
 
       setMembers((prev) => prev.filter((m) => m.id !== member.id));
@@ -194,9 +193,8 @@ export default function TeamManager({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: member.id, isActive: updatedActive }),
       });
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao alternar status.');
+        throw new Error(await getApiErrorMessage(res, 'Erro ao alternar status.'));
       }
 
       setMembers((prev) =>
@@ -231,9 +229,8 @@ export default function TeamManager({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reorder: reorderPayload }),
       });
-      const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao atualizar ordem.');
+        throw new Error(await getApiErrorMessage(res, 'Erro ao atualizar ordem.'));
       }
 
       setMembers(

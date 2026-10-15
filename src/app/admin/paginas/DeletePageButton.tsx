@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2 } from 'lucide-react';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 export default function DeletePageButton({ id, title }: { id: string; title: string }) {
   const router = useRouter();
@@ -22,11 +23,11 @@ export default function DeletePageButton({ id, title }: { id: string; title: str
       if (res.ok) {
         router.refresh();
       } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao excluir página.');
+        const errorMsg = await getApiErrorMessage(res, 'Erro ao excluir página.');
+        alert(errorMsg);
       }
     } catch {
-      alert('Falha na comunicação.');
+      alert('Falha na comunicação com o servidor.');
     } finally {
       setIsDeleting(false);
     }

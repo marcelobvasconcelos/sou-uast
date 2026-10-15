@@ -122,13 +122,13 @@ Para gerenciar os docentes, servidores técnico-administrativos e estudantes do 
 
 ## 🌐 5. Implantação em Produção no Servidor 172.16.68.50 (Porta 97)
 
-O ambiente de produção está configurado para publicar o site em **`http://172.16.68.50:97`** utilizando o arquivo `docker-compose.prod.yml`.
+O ambiente de produção está configurado para publicar o site em **`http://172.16.68.50:97`** utilizando o diretório `/var/www/soumaisuast` e o arquivo `docker-compose.prod.yml`.
 
 ### Caminho A: Implantação via Git Pull no Servidor (Recomendado)
 
-1. No servidor `172.16.68.50`, clone ou atualize o repositório:
+1. No servidor `172.16.68.50`, navegue até o diretório do projeto:
    ```bash
-   cd /opt/sou-uast
+   cd /var/www/soumaisuast
    git pull origin main
    ```
 2. Inicie os containers de produção com a porta 97 mapeada:
@@ -159,15 +159,16 @@ Utilize este caminho caso o servidor de produção não possua acesso direto à 
 
 2. **Transferir os arquivos para o servidor via SCP:**
    ```bash
-   scp sou-uast-app-prod.tar.gz docker-compose.prod.yml .env.example usuario@172.16.68.50:/home/usuario/
+   scp sou-uast-app-prod.tar.gz docker-compose.prod.yml .env.example uast@172.16.68.50:/var/www/soumaisuast/
    ```
 
 3. **No servidor `172.16.68.50`:**
    ```bash
+   cd /var/www/soumaisuast
    # Carregar a imagem Docker
    docker load < sou-uast-app-prod.tar.gz
 
-   # Criar o diretório da aplicação e subir os serviços
+   # Subir os serviços
    docker compose -f docker-compose.prod.yml up -d
    ```
 
@@ -175,31 +176,149 @@ Utilize este caminho caso o servidor de produção não possua acesso direto à 
 
 ---
 
-## ⚙️ 6. Comandos Úteis de Operação
+## 🔒 6. Gestão de Usuários Administradores e Papéis
+
+O sistema possui controle de acesso baseado em papéis (RBAC):
+- **`ADMIN` (Administrador):** Acesso total — criação/edição/exclusão de notícias, páginas, itens de menu, equipe, configurações gerais e gerenciamento de contas de usuários.
+- **`EDITOR` (Editor de Conteúdo):** Permissão para criar e editar notícias, gerenciar equipe e páginas institucionais.
+
+### Criar ou Modificar Usuários pelo Painel
+1. Acesse o painel com uma conta `ADMIN` em `/admin/usuarios`.
+2. Clique em **Novo Usuário**.
+3. Defina o nome, e-mail institucional, senha inicial e o papel (**Administrador** ou **Editor de Conteúdo**).
+4. O usuário criado já poderá logar imediatamente.
+
+### Recuperação de Acesso / Criação Emergencial via Terminal
+Caso o acesso de administrador seja perdido ou um usuário tenha sido cadastrado manualmente sem a flag/papel correto, execute no terminal do servidor:
+
+```bash
+cd /var/www/soumaisuast
+docker compose -f docker-compose.prod.yml exec app node -e "
+const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcryptjs');
+const prisma = new PrismaClient();
+async function run() {
+  const hash = await bcrypt.hash('NovaSenhaSegura2025', 12);
+  const user = await prisma.user.upsert({
+    where: { email: 'admin@ufrpe.br' },
+    update: { role: 'ADMIN', isActive: true, password: hash },
+    create: {
+      name: 'Administrador SOU+UAST',
+      email: 'admin@ufrpe.br',
+      password: hash,
+      role: 'ADMIN',
+      isActive: true,
+    },
+  });
+  console.log('✅ Usuário administrador configurado:', user.email, 'Papel:', user.role);
+}
+run().finally(() => prisma.\$disconnect());
+"
+```
+
+---
+
+## 🌍 7. Publicação Externa (Acesso sem VPN via STI / Proxy Reverso)
+
+A aplicação foi totalmente arquitetada e preparada para rodar atrás de um proxy reverso (Nginx, Apache, Traefik, F5, Cloudflare) com terminação SSL/HTTPS e sem necessidade de conexão VPN.
+
+### O que solicitar à Superintendência de Tecnologia da Informação (STI / UFRPE)
+
+Envie uma solicitação à STI com as seguintes definições:
+
+1. **DNS Público:** Apontar o subdomínio desejado (ex: `soumais.uast.ufrpe.br` ou `soumaisuast.uast.ufrpe.br`) para o IP público / gateway da UAST/UFRPE.
+2. **Proxy Reverso com Terminação TLS:**
+   - Redirecionar requisições externas `https://soumais.uast.ufrpe.br` para o servidor interno `http://172.16.68.50:97`.
+   - Certificado digital SSL/TLS válido (Let's Encrypt ou Certificado Institucional ICP-Edu).
+3. **Cabeçalhos HTTP Obrigatórios no Proxy:**
+   O proxy reverso DEVE repassar os seguintes cabeçalhos para que a autenticação, cookies seguros e redirecionamentos funcionem de forma transparente:
+
+   ```nginx
+   # Exemplo de configuração Nginx na STI:
+   server {
+       listen 443 ssl http2;
+       server_name soumais.uast.ufrpe.br;
+
+       ssl_certificate     /caminho/do/certificado.crt;
+       ssl_certificate_key /caminho/da/chave.key;
+
+       client_max_body_size 50M; # Permite upload de fotos e banners
+
+       location / {
+           proxy_pass http://172.16.68.50:97;
+           proxy_set_header Host \$host;
+           proxy_set_header X-Real-IP \$remote_addr;
+           proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto \$scheme; # informa se a conexão externa é https
+           proxy_set_header X-Forwarded-Host \$host;
+           proxy_set_header X-Forwarded-Port \$server_port;
+
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade \$http_upgrade;
+           proxy_set_header Connection "upgrade";
+       }
+   }
+   ```
+
+### O que alterar na aplicação após a liberação da STI
+
+**Não é necessário alterar nenhuma linha de código!** Basta atualizar o arquivo `.env` de produção no servidor:
+
+1. No servidor `172.16.68.50`, edite `/var/www/soumaisuast/.env`:
+   ```bash
+   nano /var/www/soumaisuast/.env
+   ```
+2. Altere as variáveis de URL com o endereço público definitivo:
+   ```env
+   # Substitua pelo endereço público oficial fornecido pela STI:
+   NEXTAUTH_URL="https://soumais.uast.ufrpe.br"
+   AUTH_URL="https://soumais.uast.ufrpe.br"
+   PUBLIC_BASE_URL="https://soumais.uast.ufrpe.br"
+
+   # Habilitar confiança em cabeçalhos de proxy reverso e forçar HTTPS se necessário:
+   AUTH_TRUST_HOST="true"
+   FORCE_HTTPS="false"
+   ```
+3. Reinicie a aplicação:
+   ```bash
+   docker compose -f docker-compose.prod.yml restart app
+   ```
+4. A aplicação detectará automaticamente que está sob HTTPS:
+   - Ativará cookies com `secure: true` e prefixo `__Host-` / `__Secure-`.
+   - O sitemap (`/sitemap.xml`) e as meta tags OpenGraph passarão a utilizar a URL canônica pública.
+   - Os uploads e o painel administrativo funcionarão com proteção CSRF e sem conflito de portas.
+
+---
+
+## ⚙️ 8. Comandos Úteis de Operação
 
 - **Visualizar logs em tempo real:**
   ```bash
-  docker compose logs -f app
+  docker compose -f docker-compose.prod.yml logs -f app
   ```
 - **Acessar o terminal do container da aplicação:**
   ```bash
-  docker compose exec app sh
+  docker compose -f docker-compose.prod.yml exec app sh
   ```
 - **Fazer backup do banco de dados:**
   ```bash
-  docker compose exec db pg_dump -U postgres sou_uast_db > backup_sou_uast.sql
+  docker compose -f docker-compose.prod.yml exec db pg_dump -U postgres sou_uast_db > backup_sou_uast.sql
   ```
 - **Restaurar backup do banco:**
   ```bash
-  cat backup_sou_uast.sql | docker compose exec -T db psql -U postgres sou_uast_db
+  cat backup_sou_uast.sql | docker compose -f docker-compose.prod.yml exec -T db psql -U postgres sou_uast_db
+  ```
+- **Executar migrações do banco manualmente:**
+  ```bash
+  docker compose -f docker-compose.prod.yml exec app npx prisma migrate deploy
   ```
 - **Reiniciar os serviços:**
   ```bash
-  docker compose restart
+  docker compose -f docker-compose.prod.yml restart
   ```
 - **Parar os serviços:**
   ```bash
-  docker compose down
+  docker compose -f docker-compose.prod.yml down
   ```
 
 ---

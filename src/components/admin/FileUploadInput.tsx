@@ -91,11 +91,19 @@ export default function FileUploadInput({
           setError('Erro ao interpretar resposta do upload.');
         }
       } else {
-        try {
-          const res = JSON.parse(xhr.responseText);
-          setError(res.error || `Falha no envio (Código ${xhr.status}).`);
-        } catch {
-          setError(`Falha na comunicação com o servidor (Código ${xhr.status}).`);
+        if (xhr.status === 401) {
+          setError('Sua sessão expirou ou não está autenticada. Faça login novamente para enviar arquivos.');
+        } else if (xhr.status === 403) {
+          setError('Acesso negado: seu usuário não possui permissão para envio de arquivos.');
+        } else if (xhr.status === 413) {
+          setError(`O arquivo enviado excede o limite máximo configurado no servidor (${maxSizeMb} MB).`);
+        } else {
+          try {
+            const res = JSON.parse(xhr.responseText);
+            setError(res.error || `Falha no envio (Código ${xhr.status}).`);
+          } catch {
+            setError(`Falha na comunicação com o servidor (Código ${xhr.status}).`);
+          }
         }
       }
     });

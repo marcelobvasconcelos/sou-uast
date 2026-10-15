@@ -8,7 +8,17 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Sua sessão expirou ou você não está autenticado. Por favor, faça login novamente.' },
+        { status: 401 }
+      );
+    }
+
+    if (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR') {
+      return NextResponse.json(
+        { error: 'Acesso negado: apenas Administradores ou Editores podem criar notícias.' },
+        { status: 403 }
+      );
     }
 
     const body = await req.json();

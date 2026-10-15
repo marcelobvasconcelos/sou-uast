@@ -15,6 +15,7 @@ import {
   LayoutTemplate
 } from 'lucide-react';
 import FileUploadInput from '@/components/admin/FileUploadInput';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 interface SettingsFormProps {
   initialSettings?: any;
@@ -70,10 +71,9 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao atualizar configurações.');
+        const errorMsg = await getApiErrorMessage(res, 'Erro ao atualizar configurações.');
+        throw new Error(errorMsg);
       }
 
       setSaveSuccess(true);
@@ -81,6 +81,9 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
       setTimeout(() => setSaveSuccess(false), 4000);
     } catch (err: any) {
       setErrorMessage(err.message || 'Falha ao salvar configurações.');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } finally {
       setIsSaving(false);
     }

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     'Educação',
   ],
   authors: [{ name: 'Unidade Acadêmica de Serra Talhada - UAST / UFRPE' }],
-  metadataBase: new URL(process.env.NEXTAUTH_URL || 'http://localhost:3000'),
+  metadataBase: new URL(process.env.PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'http://localhost:3000'),
   openGraph: {
     type: 'website',
     locale: 'pt_BR',

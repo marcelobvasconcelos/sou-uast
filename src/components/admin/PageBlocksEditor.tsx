@@ -26,6 +26,7 @@ import { PageBlockData } from '@/types';
 import FileUploadInput from './FileUploadInput';
 import BlockRenderer from '@/components/blocks/BlockRenderer';
 import { slugify } from '@/lib/utils';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 interface PageBlocksEditorProps {
   pageId?: string;
@@ -202,10 +203,9 @@ export default function PageBlocksEditor({
         body: JSON.stringify(payload),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Erro ao salvar página institucional.');
+        const errorMsg = await getApiErrorMessage(res, 'Erro ao salvar página institucional.');
+        throw new Error(errorMsg);
       }
 
       setSaveSuccess(true);
@@ -216,6 +216,9 @@ export default function PageBlocksEditor({
       }, 1000);
     } catch (err: any) {
       setErrorMessage(err.message || 'Falha ao salvar página.');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } finally {
       setIsSaving(false);
     }

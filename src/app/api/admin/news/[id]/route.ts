@@ -11,7 +11,17 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Sua sessão expirou ou você não está autenticado. Por favor, faça login novamente.' },
+        { status: 401 }
+      );
+    }
+
+    if (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR') {
+      return NextResponse.json(
+        { error: 'Acesso negado: apenas Administradores ou Editores podem editar notícias.' },
+        { status: 403 }
+      );
     }
 
     const { id } = params;
@@ -70,7 +80,17 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Sua sessão expirou ou você não está autenticado. Por favor, faça login novamente.' },
+        { status: 401 }
+      );
+    }
+
+    if (session.user.role !== 'ADMIN' && session.user.role !== 'EDITOR') {
+      return NextResponse.json(
+        { error: 'Acesso negado: apenas Administradores ou Editores podem excluir notícias.' },
+        { status: 403 }
+      );
     }
 
     const { id } = params;

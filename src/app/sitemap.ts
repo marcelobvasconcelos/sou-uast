@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  const baseUrl = process.env.PUBLIC_BASE_URL || process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
   // Rotas estáticas fixas
   const staticRoutes: MetadataRoute.Sitemap = [

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2 } from 'lucide-react';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 export default function DeleteNewsButton({ id, title }: { id: string; title: string }) {
   const router = useRouter();
@@ -22,8 +23,8 @@ export default function DeleteNewsButton({ id, title }: { id: string; title: str
       if (res.ok) {
         router.refresh();
       } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao excluir a notícia.');
+        const errorMsg = await getApiErrorMessage(res, 'Erro ao excluir a notícia.');
+        alert(errorMsg);
       }
     } catch {
       alert('Falha na comunicação com o servidor.');

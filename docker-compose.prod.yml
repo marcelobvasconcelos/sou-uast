@@ -30,7 +30,10 @@ services:
       - "97:3000"
     environment:
       DATABASE_URL: "postgresql://postgres:postgres_sou_password@db:5432/sou_uast_db?schema=public"
-      NEXTAUTH_URL: "http://172.16.68.50:97"
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://172.16.68.50:97}
+      AUTH_URL: ${AUTH_URL:-http://172.16.68.50:97}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://172.16.68.50:97}
+      AUTH_TRUST_HOST: "true"
       NEXTAUTH_SECRET: "c8d9e2b145a9f248e3e4827d9284cf651873ea7b32810f2d9526efc689437190"
       UPLOAD_DIR: "/app/uploads"
       ADMIN_INITIAL_NAME: "Administrador SOU+UAST"

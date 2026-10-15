@@ -20,6 +20,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { CategoryWithItems, MenuItemData } from '@/types';
+import { getApiErrorMessage } from '@/lib/api-errors';
 
 interface MenuManagerProps {
   initialCategories: CategoryWithItems[];
@@ -61,15 +62,14 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
         body: JSON.stringify(editingCategory),
       });
 
-      if (res.ok) {
-        setEditingCategory(null);
-        router.refresh();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao salvar categoria.');
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao salvar categoria.'));
       }
-    } catch {
-      alert('Falha na comunicação.');
+
+      setEditingCategory(null);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao processar categoria.');
     } finally {
       setIsLoading(false);
     }
@@ -85,12 +85,13 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
         method: 'DELETE',
       });
 
-      if (res.ok) {
-        router.refresh();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao excluir categoria.');
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao excluir categoria.'));
       }
+
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao excluir categoria.');
     } finally {
       setIsLoading(false);
     }
@@ -112,13 +113,14 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
         body: JSON.stringify(editingItem),
       });
 
-      if (res.ok) {
-        setEditingItem(null);
-        router.refresh();
-      } else {
-        const data = await res.json();
-        alert(data.error || 'Erro ao salvar item de menu.');
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao salvar item de menu.'));
       }
+
+      setEditingItem(null);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao salvar item de menu.');
     } finally {
       setIsLoading(false);
     }
@@ -134,9 +136,13 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
         method: 'DELETE',
       });
 
-      if (res.ok) {
-        router.refresh();
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao excluir item de menu.'));
       }
+
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message || 'Falha ao excluir item de menu.');
     } finally {
       setIsLoading(false);
     }
@@ -145,7 +151,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
   // Alternar Ativação
   const toggleItemActive = async (item: MenuItemData) => {
     try {
-      await fetch('/api/admin/menu/items', {
+      const res = await fetch('/api/admin/menu/items', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -153,8 +159,13 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
           isActive: !item.isActive,
         }),
       });
+      if (!res.ok) {
+        throw new Error(await getApiErrorMessage(res, 'Erro ao alternar status do item.'));
+      }
       router.refresh();
-    } catch {}
+    } catch (err: any) {
+      alert(err.message || 'Falha ao alternar visibilidade.');
+    }
   };
 
   return (

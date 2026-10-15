@@ -3,7 +3,52 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { prisma } from './prisma';
 
+// Detectar protocolo e host públicos
+const publicUrl =
+  process.env.PUBLIC_BASE_URL ||
+  process.env.NEXTAUTH_URL ||
+  process.env.AUTH_URL ||
+  'http://localhost:3000';
+
+const isHttps = publicUrl.startsWith('https://');
+
+// Configuração dinâmica de cookies de sessão:
+// 1. Em HTTP puro (como o IP interno http://172.16.68.50:97), secure DEVE ser false para que o navegador não descarte o cookie.
+// 2. Quando a STI configurar o proxy reverso com certificado TLS/HTTPS, secure se torna true automaticamente.
+const useSecureCookies = isHttps;
+const cookiePrefix = useSecureCookies ? '__Secure-' : '';
+const hostPrefix = useSecureCookies ? '__Host-' : '';
+
 export const authOptions: AuthOptions = {
+  useSecureCookies,
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: useSecureCookies,
+      },
+    },
+    callbackUrl: {
+      name: `${cookiePrefix}next-auth.callback-url`,
+      options: {
+        sameSite: 'lax',
+        path: '/',
+        secure: useSecureCookies,
+      },
+    },
+    csrfToken: {
+      name: `${hostPrefix}next-auth.csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: useSecureCookies,
+      },
+    },
+  },
   providers: [
     CredentialsProvider({
       name: 'Credenciais',
@@ -34,6 +79,9 @@ export const authOptions: AuthOptions = {
           throw new Error('Credenciais inválidas. Verifique seu e-mail e senha.');
         }
 
+        // Garantir que o papel seja válido (ADMIN ou EDITOR). Se for criado manualmente sem papel, define EDITOR por segurança
+        const safeRole = user.role && ['ADMIN', 'EDITOR'].includes(user.role) ? user.role : 'EDITOR';
+
         // Registrar log de login simples
         try {
           await prisma.auditLog.create({
@@ -43,7 +91,7 @@ export const authOptions: AuthOptions = {
               userEmail: user.email,
               action: 'LOGIN',
               entityType: 'Autenticação',
-              details: `Usuário realizou login com sucesso no painel administrativo.`,
+              details: `Usuário ${user.email} (${safeRole}) realizou login com sucesso no painel administrativo.`,
             },
           });
         } catch {
@@ -54,7 +102,7 @@ export const authOptions: AuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: safeRole,
         };
       },
     }),
@@ -85,3 +133,6 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET || 'fallback-secret-sou-uast-institutional-key-2025',
 };
+
+// Suporte a trustHost para compatibilidade com Auth.js / NextAuth atrás de proxy reverso
+(authOptions as any).trustHost = true;
