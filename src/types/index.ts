@@ -82,3 +82,16 @@ export interface BreadcrumbItem {
   label: string;
   href?: string;
 }
+
+export interface TeamMemberData {
+  id: string;
+  name: string;
+  degree: string;
+  role: string;
+  projectRole: string;
+  photoUrl?: string | null;
+  order: number;
+  isActive: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+}

@@ -56,7 +56,11 @@ async function main() {
 
   await prisma.siteSetting.upsert({
     where: { id: 'site_settings' },
-    update: {},
+    update: {
+      teamSectionPosition: 'AFTER_ABOUT',
+      teamSectionTitle: 'Nossa Equipe',
+      teamSectionSubtitle: 'Conheça os docentes, servidores e estudantes que constroem o SOU+UAST',
+    },
     create: {
       id: 'site_settings',
       siteName: 'SOU+UAST',
@@ -82,6 +86,9 @@ async function main() {
       lgpdNotice: 'Este portal respeita a privacidade de seus visitantes e segue as diretrizes da Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018). Não coletamos dados invasivos ou não autorizados.',
       iframeWhitelist: 'youtube.com, www.youtube.com, player.vimeo.com, docs.google.com, forms.gle, google.com/maps, www.google.com/maps',
       maxUploadSizeMb: 15,
+      teamSectionPosition: 'AFTER_ABOUT',
+      teamSectionTitle: 'Nossa Equipe',
+      teamSectionSubtitle: 'Conheça os docentes, servidores e estudantes que constroem o SOU+UAST',
     },
   });
   console.log('✓ Configurações institucionais do site registradas.');
@@ -424,9 +431,55 @@ async function main() {
       },
     });
   }
-  console.log('✓ Notícias iniciais cadastradas (incluindo 3 destaques com capa para o carrossel e 1 rascunho).');
+  // 6. Equipe do Projeto SOU+UAST (3 membros de exemplo com fotos de placeholder)
+  const teamData = [
+    {
+      name: 'Prof. Dr. André Silva Santos',
+      degree: 'Doutor em Ciência da Computação (UFPE)',
+      role: 'Professor Adjunto - UAST/UFRPE',
+      projectRole: 'Coordenador Geral',
+      photoUrl: '/images/team/coordenador.svg',
+      order: 1,
+      isActive: true,
+    },
+    {
+      name: 'Ma. Mariana Bezerra Lima',
+      degree: 'Mestra em Gestão Pública (UPE)',
+      role: 'Técnica em Assuntos Educacionais',
+      projectRole: 'Membro da Equipe',
+      photoUrl: '/images/team/membro-ta.svg',
+      order: 2,
+      isActive: true,
+    },
+    {
+      name: 'Lucas Gabriel Oliveira',
+      degree: 'Graduando em Bacharelado em Sistemas de Informação',
+      role: 'Bolsista de Extensão (BEXT / UFRPE)',
+      projectRole: 'Monitor',
+      photoUrl: '/images/team/monitor.svg',
+      order: 3,
+      isActive: true,
+    },
+  ];
 
-  // 6. Log de Auditoria Inicial
+  for (const member of teamData) {
+    const existing = await prisma.teamMember.findFirst({
+      where: { name: member.name },
+    });
+    if (existing) {
+      await prisma.teamMember.update({
+        where: { id: existing.id },
+        data: member,
+      });
+    } else {
+      await prisma.teamMember.create({
+        data: member,
+      });
+    }
+  }
+  console.log('✓ Membros iniciais da equipe cadastrados com fotos de placeholder circulares.');
+
+  // 7. Log de Auditoria Inicial
   await prisma.auditLog.create({
     data: {
       userId: adminUser.id,

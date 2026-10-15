@@ -47,6 +47,9 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
     lgpdNotice: initialSettings?.lgpdNotice || '',
     iframeWhitelist: initialSettings?.iframeWhitelist || 'youtube.com, www.youtube.com, player.vimeo.com, docs.google.com, forms.gle, google.com/maps',
     maxUploadSizeMb: initialSettings?.maxUploadSizeMb || 15,
+    teamSectionPosition: initialSettings?.teamSectionPosition || 'AFTER_ABOUT',
+    teamSectionTitle: initialSettings?.teamSectionTitle || 'Nossa Equipe',
+    teamSectionSubtitle: initialSettings?.teamSectionSubtitle || 'Conheça os docentes, servidores e estudantes que constroem o SOU+UAST',
   });
 
   const [activeTab, setActiveTab] = useState<'geral' | 'home' | 'rodape' | 'redes' | 'seguranca'>('geral');
@@ -325,6 +328,74 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
             onChange={(url) => setFormData({ ...formData, aboutImageUrl: url })}
             aspectRatioHint="4:3 ou 16:9"
           />
+
+          {/* Configuração da Seção de Equipe */}
+          <div className="pt-6 border-t border-gray-200 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-ufrpe-blue-900">
+                  Seção da Equipe na Página Inicial
+                </h3>
+                <p className="text-xs text-gray-500">
+                  Defina onde a grade de membros da equipe será exibida no layout da página inicial.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">
+                Posicionamento no Layout
+              </label>
+              <select
+                value={formData.teamSectionPosition}
+                onChange={(e) => setFormData({ ...formData, teamSectionPosition: e.target.value })}
+                className="w-full px-3 py-2 border rounded-lg text-sm bg-white font-medium"
+              >
+                <option value="AFTER_ABOUT">
+                  Abaixo do "Sobre o Projeto" (Recomendado: Missão institucional seguida das pessoas)
+                </option>
+                <option value="BEFORE_ABOUT">
+                  Acima do "Sobre o Projeto" (Entre as Notícias Recentes e o Sobre)
+                </option>
+                <option value="AFTER_CAROUSEL">
+                  No Topo da Página (Logo abaixo do Carrossel de Notícias em Destaque)
+                </option>
+                <option value="NONE">
+                  Ocultar Seção da Equipe na Página Inicial
+                </option>
+              </select>
+              <p className="text-[11px] text-gray-500 mt-1">
+                A posição padrão recomendada é após a seção "Sobre", pois contextualiza a instituição antes de introduzir as pessoas que realizam o projeto.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  Título da Seção de Equipe
+                </label>
+                <input
+                  type="text"
+                  value={formData.teamSectionTitle}
+                  onChange={(e) => setFormData({ ...formData, teamSectionTitle: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                  placeholder="Ex: Nossa Equipe"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  Subtítulo / Descrição Curta
+                </label>
+                <input
+                  type="text"
+                  value={formData.teamSectionSubtitle}
+                  onChange={(e) => setFormData({ ...formData, teamSectionSubtitle: e.target.value })}
+                  className="w-full px-3 py-2 border rounded-lg text-sm"
+                  placeholder="Ex: Conheça os docentes, servidores e estudantes..."
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

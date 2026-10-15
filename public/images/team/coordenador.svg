@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="coordBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#002042" />
+      <stop offset="100%" stop-color="#003366" />
+    </linearGradient>
+    <linearGradient id="coordSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5d0b5" />
+      <stop offset="100%" stop-color="#e2b494" />
+    </linearGradient>
+    <linearGradient id="coordSuit" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#coordBg)" />
+  <circle cx="200" cy="200" r="185" fill="none" stroke="#e5a823" stroke-width="4" opacity="0.3" />
+  
+  <!-- Corpo / Paletó -->
+  <path d="M110 390 C110 300 140 270 200 270 C260 270 290 300 290 390 Z" fill="url(#coordSuit)" />
+  <!-- Camisa e Gravata Institucional Verde -->
+  <polygon points="200,270 175,340 225,340" fill="#ffffff" />
+  <polygon points="200,285 208,340 200,370 192,340" fill="#006633" />
+  
+  <!-- Pescoço -->
+  <rect x="182" y="220" width="36" height="55" rx="10" fill="url(#coordSkin)" />
+  
+  <!-- Cabeça / Rosto -->
+  <ellipse cx="200" cy="180" rx="58" ry="68" fill="url(#coordSkin)" />
+  <!-- Cabelo / Penteado Profissional -->
+  <path d="M142 165 C140 120 165 95 200 95 C235 95 260 120 258 165 C250 135 240 120 200 120 C160 120 150 135 142 165 Z" fill="#332219" />
+  <!-- Óculos Elegantes -->
+  <rect x="160" y="165" width="30" height="20" rx="4" fill="none" stroke="#003366" stroke-width="4" />
+  <rect x="210" y="165" width="30" height="20" rx="4" fill="none" stroke="#003366" stroke-width="4" />
+  <line x1="190" y1="173" x2="210" y2="173" stroke="#003366" stroke-width="4" />
+  <!-- Olhos -->
+  <circle cx="175" cy="175" r="3.5" fill="#1e293b" />
+  <circle cx="225" cy="175" r="3.5" fill="#1e293b" />
+  <!-- Nariz e Sorriso Confiante -->
+  <path d="M200 180 L197 195 L203 195" stroke="#c89674" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <path d="M185 212 Q200 224 215 212" stroke="#9a3412" stroke-width="3" fill="none" stroke-linecap="round" />
+</svg>

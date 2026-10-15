@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="monBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#042f2e" />
+    </linearGradient>
+    <linearGradient id="monSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0a980" />
+      <stop offset="100%" stop-color="#c68a5e" />
+    </linearGradient>
+    <linearGradient id="monShirt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#15803d" />
+      <stop offset="100%" stop-color="#166534" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#monBg)" />
+  <circle cx="200" cy="200" r="185" fill="none" stroke="#e5a823" stroke-width="4" opacity="0.3" />
+
+  <!-- Corpo / Moletom Universitário SOU+UAST -->
+  <path d="M110 390 C110 300 145 270 200 270 C255 270 290 300 290 390 Z" fill="url(#monShirt)" />
+  <!-- Gola Redonda -->
+  <circle cx="200" cy="275" r="28" fill="#f8fafc" />
+  <circle cx="200" cy="270" r="24" fill="url(#monSkin)" />
+
+  <!-- Pescoço -->
+  <rect x="183" y="215" width="34" height="60" rx="10" fill="url(#monSkin)" />
+
+  <!-- Cabeça / Rosto Jovem -->
+  <ellipse cx="200" cy="180" rx="55" ry="64" fill="url(#monSkin)" />
+
+  <!-- Cabelo Moderno Curto -->
+  <path d="M140 170 C140 110 160 85 200 85 C230 85 255 105 258 150 C250 145 235 130 200 130 C165 130 150 155 140 170 Z" fill="#171717" />
+  <path d="M142 165 C138 180 148 190 148 190" stroke="#171717" stroke-width="5" stroke-linecap="round" />
+
+  <!-- Olhos Jovens e Expressivos -->
+  <circle cx="178" cy="176" r="4.5" fill="#1e293b" />
+  <circle cx="222" cy="176" r="4.5" fill="#1e293b" />
+  <circle cx="179" cy="174" r="1.5" fill="#ffffff" />
+  <circle cx="223" cy="174" r="1.5" fill="#ffffff" />
+
+  <!-- Sobrancelhas -->
+  <path d="M168 166 Q178 160 188 166" stroke="#171717" stroke-width="3" fill="none" stroke-linecap="round" />
+  <path d="M212 166 Q222 160 232 166" stroke="#171717" stroke-width="3" fill="none" stroke-linecap="round" />
+
+  <!-- Nariz e Sorriso Aberto e Entusiasmado -->
+  <path d="M200 180 L198 194 L202 194" stroke="#9a6540" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <path d="M184 210 Q200 226 216 210" stroke="#7f1d1d" stroke-width="3.5" fill="none" stroke-linecap="round" />
+</svg>

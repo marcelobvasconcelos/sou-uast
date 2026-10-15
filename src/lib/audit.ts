@@ -5,7 +5,7 @@ export interface AuditParams {
   userName?: string | null;
   userEmail?: string | null;
   action: 'CREATE' | 'UPDATE' | 'DELETE' | 'PUBLISH' | 'UNPUBLISH' | 'LOGIN' | 'SETTINGS_CHANGE';
-  entityType: 'Notícia' | 'Página' | 'Menu' | 'Categoria' | 'Banner' | 'Usuário' | 'Configurações' | 'Sistema';
+  entityType: 'Notícia' | 'Página' | 'Menu' | 'Categoria' | 'Banner' | 'Usuário' | 'Configurações' | 'Sistema' | 'Equipe';
   entityId?: string | null;
   details?: string;
   ipAddress?: string | null;

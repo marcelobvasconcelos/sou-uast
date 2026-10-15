@@ -170,9 +170,28 @@ model SiteSetting {
   lgpdNotice               String   @db.Text
   iframeWhitelist          String   @db.Text
   maxUploadSizeMb          Int      @default(15)
+  teamSectionPosition      String   @default("AFTER_ABOUT") // AFTER_ABOUT, BEFORE_ABOUT, AFTER_CAROUSEL, NONE
+  teamSectionTitle         String   @default("Nossa Equipe")
+  teamSectionSubtitle      String   @default("Conheça os docentes, servidores e estudantes que constroem o SOU+UAST")
   updatedAt                DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  name        String
+  degree      String   // Ex: Doutor em Ciência da Computação, Mestra, Graduando
+  role        String   // Ex: Professor Adjunto, Técnico-Administrativo, Bolsista
+  projectRole String   // Ex: Coordenador, Membro, Monitor, etc.
+  photoUrl    String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, order])
+  @@map("team_members")
 }
 
 model AuditLog {

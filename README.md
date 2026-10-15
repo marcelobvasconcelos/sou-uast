@@ -98,7 +98,29 @@ Para cadastrar páginas dinâmicas:
 
 ---
 
-## 🌐 4. Implantação em Produção no Servidor 172.16.68.50 (Porta 97)
+## 👥 4. Gestão da Equipe do Projeto (Seção "Nossa Equipe")
+
+Para gerenciar os docentes, servidores técnico-administrativos e estudantes do projeto:
+1. Acesse o painel em `/admin` e clique em **Equipe do Projeto** (`/admin/equipe`).
+2. Clique em **Novo Membro** ou **Editar**:
+   - **Foto do Integrante:** Upload de imagem (JPG, PNG, WebP) com pré-visualização circular imediata. O usuário é orientado a centralizar o rosto no corte quadrado (1:1), renderizado perfeitamente como círculo no portal.
+   - **Fallback Inteligente:** Se o integrante não possuir foto cadastrada, o portal gera automaticamente um círculo de avatar com as iniciais do nome sobre o gradiente institucional.
+   - **Nome Completo:** Nome do integrante com destaque visual.
+   - **Titulação Acadêmica:** Ex: Doutor em Ciência da Computação, Mestra em Gestão Pública, Graduando em BSI.
+   - **Cargo Institucional:** Ex: Professor Adjunto, Técnica em Assuntos Educacionais, Bolsista de Extensão (BEXT).
+   - **Participação no SOU+UAST:** Seleção rápida entre *Coordenador*, *Membro*, *Monitor* ou campo livre para função personalizada.
+   - **Ordenação:** Botões "Subir" e "Descer" na listagem para reordenação instantânea, além de campo numérico no formulário. *Coordenadores são exibidos primeiro por padrão.*
+   - **Ativo/Inativo:** Alternador para ocultar ou exibir o membro sem excluí-lo da base.
+3. **Configuração de Posicionamento:**
+   - Em `/admin/configuracoes` -> aba **Seção "Sobre" na Home**, configure a posição da grade da equipe:
+     - `Abaixo do "Sobre o Projeto"` (Padrão recomendado: contextualiza a instituição antes das pessoas).
+     - `Acima do "Sobre o Projeto"` (Entre as notícias e a missão).
+     - `No Topo da Página` (Logo abaixo do carrossel de notícias).
+     - `Ocultar Seção da Equipe` (Não exibir na home).
+
+---
+
+## 🌐 5. Implantação em Produção no Servidor 172.16.68.50 (Porta 97)
 
 O ambiente de produção está configurado para publicar o site em **`http://172.16.68.50:97`** utilizando o arquivo `docker-compose.prod.yml`.
 
@@ -153,7 +175,7 @@ Utilize este caminho caso o servidor de produção não possua acesso direto à 
 
 ---
 
-## ⚙️ 5. Comandos Úteis de Operação
+## ⚙️ 6. Comandos Úteis de Operação
 
 - **Visualizar logs em tempo real:**
   ```bash
@@ -194,3 +216,9 @@ Utilize este caminho caso o servidor de produção não possua acesso direto à 
 | **6** | Funcionamento responsivo em Desktop e Mobile | **Aprovado** | Testado com layout mobile first, menu hambúrguer, carrossel com swipe por toque e menu em cascata retrátil. |
 | **7** | `docker compose up -d` sobe o site funcional em http://localhost:3000 do zero, com banco migrado e admin criado | **Aprovado** | O `docker-entrypoint.sh` executa `prisma db push` e `prisma/seed.js` automaticamente. |
 | **8** | Mesma imagem sobe no servidor 172.16.68.50 na porta 97 (http://172.16.68.50:97) | **Aprovado** | Configurado em `docker-compose.prod.yml` com mapeamento `"97:3000"`. |
+| **9** | Seção "Nossa Equipe" exibe foto circular uniforme, nome, titulação, cargo e participação | **Aprovado** | Acesse `/`; a seção da equipe exibe cards com fotos circulares idênticas, alinhadas e com inicial fallback se não houver foto. |
+| **10** | Coordenador aparece primeiro por padrão, seguido da ordem definida no painel | **Aprovado** | Na home pública e no painel `/admin/equipe`, coordenadores possuem badge destacada e prioridade na ordenação. |
+| **11** | CRUD completo de membros no painel administrativo com upload e pré-visualização circular | **Aprovado** | Acesse `/admin/equipe`; cadastre, edite, ordene e ative/desative membros com pré-visualização em tempo real do formato circular. |
+| **12** | Posicionamento da seção de equipe configurável pelo painel | **Aprovado** | Em `/admin/configuracoes` -> aba "Seção 'Sobre' na Home", altere a posição entre após o sobre, antes do sobre, após o carrossel ou ocultar. |
+| **13** | Funcionalidades existentes (carrossel, notícias, páginas, rodapé) continuam 100% intactas | **Aprovado** | Todas as rotas públicas e administrativas continuam respondendo HTTP 200 OK sem alterações em dados pré-existentes. |
+

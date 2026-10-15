@@ -18,7 +18,8 @@ import {
   ChevronRight,
   Menu,
   X,
-  History
+  History,
+  GraduationCap
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -37,6 +38,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { label: 'Notícias & Destaques', href: '/admin/noticias', icon: Newspaper },
     { label: 'Páginas Institucionais', href: '/admin/paginas', icon: FileText },
     { label: 'Menu em Cascata', href: '/admin/menu', icon: MenuIcon },
+    { label: 'Equipe do Projeto', href: '/admin/equipe', icon: GraduationCap },
     { label: 'Configurações do Site', href: '/admin/configuracoes', icon: Settings },
     // Apenas Administrador
     ...(isAdmin

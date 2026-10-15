@@ -55,6 +55,9 @@ export async function PUT(req: NextRequest) {
         lgpdNotice: body.lgpdNotice,
         iframeWhitelist: body.iframeWhitelist,
         maxUploadSizeMb: body.maxUploadSizeMb ? Number(body.maxUploadSizeMb) : 15,
+        teamSectionPosition: body.teamSectionPosition || 'AFTER_ABOUT',
+        teamSectionTitle: body.teamSectionTitle || 'Nossa Equipe',
+        teamSectionSubtitle: body.teamSectionSubtitle || 'Conheça os docentes, servidores e estudantes que constroem o SOU+UAST',
       },
       create: {
         id: 'site_settings',
@@ -81,6 +84,9 @@ export async function PUT(req: NextRequest) {
         lgpdNotice: body.lgpdNotice || '',
         iframeWhitelist: body.iframeWhitelist || 'youtube.com, vimeo.com, docs.google.com',
         maxUploadSizeMb: body.maxUploadSizeMb ? Number(body.maxUploadSizeMb) : 15,
+        teamSectionPosition: body.teamSectionPosition || 'AFTER_ABOUT',
+        teamSectionTitle: body.teamSectionTitle || 'Nossa Equipe',
+        teamSectionSubtitle: body.teamSectionSubtitle || 'Conheça os docentes, servidores e estudantes que constroem o SOU+UAST',
       },
     });
 

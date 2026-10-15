@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <linearGradient id="memBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#003822" />
+      <stop offset="100%" stop-color="#006633" />
+    </linearGradient>
+    <linearGradient id="memSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fad6bd" />
+      <stop offset="100%" stop-color="#e2b090" />
+    </linearGradient>
+    <linearGradient id="memShirt" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369a1" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#memBg)" />
+  <circle cx="200" cy="200" r="185" fill="none" stroke="#e5a823" stroke-width="4" opacity="0.3" />
+
+  <!-- Cabelo por trás -->
+  <path d="M135 170 C130 260 145 310 160 320 C180 320 180 290 180 270 C220 270 220 320 240 320 C255 310 270 260 265 170 Z" fill="#2d1c14" />
+
+  <!-- Corpo / Blusa Institucional Azul -->
+  <path d="M115 390 C115 305 145 275 200 275 C255 275 285 305 285 390 Z" fill="url(#memShirt)" />
+  <!-- Gola -->
+  <path d="M175 275 Q200 300 225 275 Z" fill="#e0f2fe" />
+
+  <!-- Pescoço -->
+  <rect x="183" y="215" width="34" height="60" rx="10" fill="url(#memSkin)" />
+
+  <!-- Cabeça / Rosto -->
+  <ellipse cx="200" cy="180" rx="54" ry="64" fill="url(#memSkin)" />
+
+  <!-- Cabelo frente -->
+  <path d="M142 165 C140 115 160 90 200 90 C240 90 260 115 258 165 C250 140 230 110 200 115 C160 110 148 140 142 165 Z" fill="#2d1c14" />
+
+  <!-- Olhos -->
+  <circle cx="178" cy="175" r="4" fill="#1e293b" />
+  <circle cx="222" cy="175" r="4" fill="#1e293b" />
+  <!-- Sobrancelhas -->
+  <path d="M170 166 Q178 162 186 166" stroke="#2d1c14" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <path d="M214 166 Q222 162 230 166" stroke="#2d1c14" stroke-width="2.5" fill="none" stroke-linecap="round" />
+
+  <!-- Nariz e Sorriso Acolhedor -->
+  <path d="M200 180 L198 193 L202 193" stroke="#c89674" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  <path d="M186 210 Q200 222 214 210" stroke="#b91c1c" stroke-width="3" fill="none" stroke-linecap="round" />
+</svg>
