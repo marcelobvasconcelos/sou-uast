@@ -4,7 +4,14 @@
  * quanto sob subpastas com Next.js basePath (ex: /soumaisuast).
  */
 
-export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
+let rawBasePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+if (rawBasePath.startsWith('http://') || rawBasePath.startsWith('https://')) {
+  try {
+    rawBasePath = new URL(rawBasePath).pathname;
+  } catch {}
+}
+rawBasePath = rawBasePath.replace(/\/+$/, '');
+export const BASE_PATH = rawBasePath === '/' || !rawBasePath ? '' : (rawBasePath.startsWith('/') ? rawBasePath : `/${rawBasePath}`);
 
 /**
  * Adiciona o prefixo do basePath se necessário a qualquer caminho absoluto interno.

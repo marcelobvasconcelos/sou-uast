@@ -1,4 +1,12 @@
-const basePath = process.env.BASE_PATH || '';
+let rawBasePath = process.env.BASE_PATH || '';
+if (rawBasePath.startsWith('http://') || rawBasePath.startsWith('https://')) {
+  try {
+    const parsed = new URL(rawBasePath);
+    rawBasePath = parsed.pathname;
+  } catch {}
+}
+rawBasePath = rawBasePath.replace(/\/+$/, '');
+const basePath = rawBasePath === '/' || !rawBasePath ? '' : (rawBasePath.startsWith('/') ? rawBasePath : `/${rawBasePath}`);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
