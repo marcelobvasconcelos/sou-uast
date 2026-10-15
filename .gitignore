@@ -20,8 +20,9 @@ dist/
 !.env.example
 
 # Uploads directory (local persistent uploads)
-uploads/
-public/uploads/
+/uploads/
+/public/uploads/
+!src/app/api/uploads/
 
 # Legacy files
 _legado_reservas/

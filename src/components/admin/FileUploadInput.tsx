@@ -166,6 +166,7 @@ export default function FileUploadInput({
               src={preview}
               alt="Pré-visualização da imagem"
               fill
+              unoptimized
               className="object-contain"
             />
             {/* Overlay com botão de remover e trocar */}
