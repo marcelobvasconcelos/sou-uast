@@ -41,7 +41,11 @@ const server = http.createServer((req, res) => {
   // Se a requisição veio sem o BASE_PATH (ex: proxy reverso do Apache cortou o prefixo),
   // adicionamos o prefixo automaticamente para que o Next.js responda corretamente!
   if (BASE_PATH && !targetPath.startsWith(BASE_PATH)) {
-    targetPath = `${BASE_PATH}${targetPath.startsWith('/') ? targetPath : '/' + targetPath}`;
+    if (targetPath === '/' || targetPath === '') {
+      targetPath = BASE_PATH;
+    } else {
+      targetPath = `${BASE_PATH}${targetPath.startsWith('/') ? targetPath : '/' + targetPath}`;
+    }
   }
 
   const options = {
@@ -70,7 +74,11 @@ const server = http.createServer((req, res) => {
 server.on('upgrade', (req, socket, head) => {
   let targetPath = req.url;
   if (BASE_PATH && !targetPath.startsWith(BASE_PATH)) {
-    targetPath = `${BASE_PATH}${targetPath.startsWith('/') ? targetPath : '/' + targetPath}`;
+    if (targetPath === '/' || targetPath === '') {
+      targetPath = BASE_PATH;
+    } else {
+      targetPath = `${BASE_PATH}${targetPath.startsWith('/') ? targetPath : '/' + targetPath}`;
+    }
   }
 
   const options = {
