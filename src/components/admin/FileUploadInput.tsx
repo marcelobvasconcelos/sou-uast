@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { UploadCloud, CheckCircle2, AlertCircle, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { getApiUrl } from '@/lib/api-client';
 
 interface FileUploadInputProps {
   label: string;
@@ -113,7 +114,7 @@ export default function FileUploadInput({
       setError('Falha de conexão durante o upload da imagem.');
     });
 
-    xhr.open('POST', '/api/upload');
+    xhr.open('POST', getApiUrl('/api/upload'));
     xhr.send(formData);
   };
 

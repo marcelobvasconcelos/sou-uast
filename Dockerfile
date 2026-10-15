@@ -22,6 +22,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+ARG BASE_PATH=""
+ENV BASE_PATH=$BASE_PATH
+ENV NEXT_PUBLIC_BASE_PATH=$BASE_PATH
+
 # Gerar Prisma Client e Compilar Next.js Standalone
 RUN npx prisma generate
 RUN npm run build
@@ -34,6 +38,8 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV BASE_PATH=$BASE_PATH
+ENV NEXT_PUBLIC_BASE_PATH=$BASE_PATH
 
 # Criar usuário não-root
 RUN addgroup --system --gid 1001 nodejs && \

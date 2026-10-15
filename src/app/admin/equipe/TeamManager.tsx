@@ -23,6 +23,7 @@ import {
 import FileUploadInput from '@/components/admin/FileUploadInput';
 import { TeamMemberData } from '@/types';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 
 interface TeamManagerProps {
   initialMembers: TeamMemberData[];
@@ -137,7 +138,7 @@ export default function TeamManager({
       };
 
       const isNew = !editingMember.id;
-      const res = await fetch('/api/admin/team', {
+      const res = await fetch(getApiUrl('/api/admin/team'), {
         method: isNew ? 'POST' : 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -152,7 +153,7 @@ export default function TeamManager({
       router.refresh();
 
       // Recarregar lista local
-      const listRes = await fetch('/api/admin/team');
+      const listRes = await fetch(getApiUrl('/api/admin/team'));
       const listData = await listRes.json();
       if (listData.members) {
         setMembers(listData.members);
@@ -170,7 +171,7 @@ export default function TeamManager({
     }
 
     try {
-      const res = await fetch(`/api/admin/team?id=${member.id}`, {
+      const res = await fetch(getApiUrl(`/api/admin/team?id=${member.id}`), {
         method: 'DELETE',
       });
       if (!res.ok) {
@@ -188,7 +189,7 @@ export default function TeamManager({
   const handleToggleActive = async (member: TeamMemberData) => {
     try {
       const updatedActive = !member.isActive;
-      const res = await fetch('/api/admin/team', {
+      const res = await fetch(getApiUrl('/api/admin/team'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: member.id, isActive: updatedActive }),
@@ -224,7 +225,7 @@ export default function TeamManager({
     }));
 
     try {
-      const res = await fetch('/api/admin/team', {
+      const res = await fetch(getApiUrl('/api/admin/team'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reorder: reorderPayload }),

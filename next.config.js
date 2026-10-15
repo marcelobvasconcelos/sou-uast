@@ -1,8 +1,11 @@
+const basePath = process.env.BASE_PATH || '';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
+  ...(basePath ? { basePath, assetPrefix: basePath } : {}),
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -23,8 +26,10 @@ const nextConfig = {
         'localhost:3000',
         '172.16.68.50:97',
         '172.16.68.50',
-        ...(process.env.PUBLIC_BASE_URL ? [process.env.PUBLIC_BASE_URL.replace(/^https?:\/\//, '')] : []),
-        ...(process.env.NEXTAUTH_URL ? [process.env.NEXTAUTH_URL.replace(/^https?:\/\//, '')] : []),
+        'www.uast.ufrpe.br',
+        'soumais.uast.ufrpe.br',
+        ...(process.env.PUBLIC_BASE_URL ? [process.env.PUBLIC_BASE_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '')] : []),
+        ...(process.env.NEXTAUTH_URL ? [process.env.NEXTAUTH_URL.replace(/^https?:\/\//, '').replace(/\/.*$/, '')] : []),
       ],
     },
   },

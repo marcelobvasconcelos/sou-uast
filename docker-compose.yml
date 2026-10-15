@@ -23,6 +23,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        BASE_PATH: ${BASE_PATH:-}
     container_name: sou_uast_app
     restart: always
     depends_on:
@@ -32,6 +34,8 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: "postgresql://postgres:postgres_sou_password@db:5432/sou_uast_db?schema=public"
+      BASE_PATH: ${BASE_PATH:-}
+      NEXT_PUBLIC_BASE_PATH: ${BASE_PATH:-}
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
       AUTH_URL: ${AUTH_URL:-http://localhost:3000}
       PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}

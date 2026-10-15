@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2 } from 'lucide-react';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 
 export default function DeletePageButton({ id, title }: { id: string; title: string }) {
   const router = useRouter();
@@ -16,7 +17,7 @@ export default function DeletePageButton({ id, title }: { id: string; title: str
 
     setIsDeleting(true);
     try {
-      const res = await fetch(`/api/admin/pages/${id}`, {
+      const res = await fetch(getApiUrl(`/api/admin/pages/${id}`), {
         method: 'DELETE',
       });
 

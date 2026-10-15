@@ -16,6 +16,7 @@ import {
 import { formatDate } from '@/lib/utils';
 import { Role } from '@prisma/client';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 
 interface UserItem {
   id: string;
@@ -81,7 +82,7 @@ export default function UsersManager({
     setIsSubmitting(true);
 
     try {
-      const url = isNew ? '/api/admin/users' : `/api/admin/users/${editingUser.id}`;
+      const url = getApiUrl(isNew ? '/api/admin/users' : `/api/admin/users/${editingUser.id}`);
       const method = isNew ? 'POST' : 'PUT';
 
       const res = await fetch(url, {
@@ -112,7 +113,7 @@ export default function UsersManager({
     if (!confirm(`Deseja realmente remover o usuário "${user.name}" (${user.email})?`)) return;
 
     try {
-      const res = await fetch(`/api/admin/users/${user.id}`, {
+      const res = await fetch(getApiUrl(`/api/admin/users/${user.id}`), {
         method: 'DELETE',
       });
 

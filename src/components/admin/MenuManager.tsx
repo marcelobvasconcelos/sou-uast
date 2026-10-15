@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { CategoryWithItems, MenuItemData } from '@/types';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 
 interface MenuManagerProps {
   initialCategories: CategoryWithItems[];
@@ -53,7 +54,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
 
     try {
       const isNew = !editingCategory.id;
-      const url = '/api/admin/menu/categories';
+      const url = getApiUrl('/api/admin/menu/categories');
       const method = isNew ? 'POST' : 'PUT';
 
       const res = await fetch(url, {
@@ -81,7 +82,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
     setIsLoading(true);
 
     try {
-      const res = await fetch(`/api/admin/menu/categories?id=${id}`, {
+      const res = await fetch(getApiUrl(`/api/admin/menu/categories?id=${id}`), {
         method: 'DELETE',
       });
 
@@ -104,7 +105,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
 
     try {
       const isNew = !editingItem.id;
-      const url = '/api/admin/menu/items';
+      const url = getApiUrl('/api/admin/menu/items');
       const method = isNew ? 'POST' : 'PUT';
 
       const res = await fetch(url, {
@@ -132,7 +133,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
     setIsLoading(true);
 
     try {
-      const res = await fetch(`/api/admin/menu/items?id=${id}`, {
+      const res = await fetch(getApiUrl(`/api/admin/menu/items?id=${id}`), {
         method: 'DELETE',
       });
 
@@ -151,7 +152,7 @@ export default function MenuManager({ initialCategories, availablePages }: MenuM
   // Alternar Ativação
   const toggleItemActive = async (item: MenuItemData) => {
     try {
-      const res = await fetch('/api/admin/menu/items', {
+      const res = await fetch(getApiUrl('/api/admin/menu/items'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

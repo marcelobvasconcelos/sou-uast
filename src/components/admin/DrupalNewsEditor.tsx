@@ -27,6 +27,7 @@ import {
 import FileUploadInput from './FileUploadInput';
 import { slugify, formatDate, estimateReadingTime } from '@/lib/utils';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 import { ContentStatus } from '@prisma/client';
 
 interface NewsFormData {
@@ -150,7 +151,7 @@ export default function DrupalNewsEditor({ initialData, isEditing = false }: Dru
         publishedAt: new Date(formData.publishedAt).toISOString(),
       };
 
-      const url = isEditing ? `/api/admin/news/${formData.id}` : '/api/admin/news';
+      const url = getApiUrl(isEditing ? `/api/admin/news/${formData.id}` : '/api/admin/news');
       const method = isEditing ? 'PUT' : 'POST';
 
       const res = await fetch(url, {

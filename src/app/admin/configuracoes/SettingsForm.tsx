@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import FileUploadInput from '@/components/admin/FileUploadInput';
 import { getApiErrorMessage } from '@/lib/api-errors';
+import { getApiUrl } from '@/lib/api-client';
 
 interface SettingsFormProps {
   initialSettings?: any;
@@ -65,7 +66,7 @@ export default function SettingsForm({ initialSettings }: SettingsFormProps) {
     setSaveSuccess(false);
 
     try {
-      const res = await fetch('/api/admin/settings', {
+      const res = await fetch(getApiUrl('/api/admin/settings'), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
