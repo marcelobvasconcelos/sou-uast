@@ -14,8 +14,11 @@ export function middleware(request: NextRequest) {
   const host = forwardedHost || request.headers.get('host') || 'localhost';
   const isInternal = host.includes('127.0.0.1') || host.includes('localhost');
 
-  if (!isInternal && shouldRedirectHttps && forwardedProto === 'http') {
-    const httpsUrl = new URL(request.nextUrl.pathname + request.nextUrl.search, `https://${host}`);
+  const basePath = request.nextUrl.basePath || '';
+  const fullPath = `${basePath}${request.nextUrl.pathname}`;
+
+  if (!isInternal && forceHttps && forwardedProto === 'http') {
+    const httpsUrl = new URL(fullPath + request.nextUrl.search, `https://${host}`);
     return NextResponse.redirect(httpsUrl, 301);
   }
 
