@@ -19,7 +19,8 @@ import {
   Menu,
   X,
   History,
-  GraduationCap
+  GraduationCap,
+  HelpCircle
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -47,6 +48,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           { label: 'Log de Auditoria', href: '/admin/auditoria', icon: History },
         ]
       : []),
+    { label: 'Ajuda', href: '/admin/ajuda', icon: HelpCircle },
   ];
 
   const isActive = (href: string) => {

@@ -30,6 +30,7 @@ export default function Footer({ settings }: FooterProps) {
     { title: 'Acesso à Informação', url: 'https://www.gov.br/acessoainformacao' },
     { title: 'Portal da Transparência', url: 'https://portaldatransparencia.gov.br' },
     { title: 'Declaração de Acessibilidade', url: '/pagina/acessibilidade' },
+    { title: 'Central de Ajuda', url: '/ajuda' },
   ];
 
   if (settings?.footerInstitutionalLinks) {
@@ -198,6 +199,10 @@ export default function Footer({ settings }: FooterProps) {
           <div className="flex items-center space-x-4">
             <Link href="/pagina/acessibilidade" className="hover:text-slate-200 hover:underline">
               Acessibilidade e-MAG
+            </Link>
+            <span>•</span>
+            <Link href="/ajuda" className="hover:text-slate-200 hover:underline">
+              Ajuda
             </Link>
             <span>•</span>
             <Link href="/login" className="hover:text-slate-200 hover:underline">

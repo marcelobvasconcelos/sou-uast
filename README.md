@@ -323,6 +323,29 @@ Envie uma solicitação à STI com as seguintes definições:
 
 ---
 
+## 📖 Menu de Ajuda
+
+O portal SOU+UAST conta com uma seção de Ajuda desenvolvida em linguagem simples e filtrada no servidor de acordo com o perfil de acesso do usuário (Visitante, Editor de Conteúdo e Administrador), garantindo clareza e segurança operacional.
+
+### Onde a página fica localizada
+- **Painel Administrativo (`/admin/ajuda`):** Acessível aos usuários autenticados através do item **"Ajuda"** na navegação lateral do painel.
+  - **Editor de Conteúdo:** Visualiza apenas as informações pertinentes às suas atribuições: login, publicação de notícias, troca de imagem de capa, limitações do perfil, significado das mensagens de erro, segurança e perguntas frequentes. As seções restritas de administração são filtradas no servidor e não são exibidas.
+  - **Administrador:** Visualiza todas as seções do sistema, incluindo criação de contas de usuários, definição de papéis, alteração de logos institucionais, cuidados ao gerenciar conteúdo e configurações globais.
+- **Área Pública (`/ajuda`):** Acessível diretamente pelo rodapé do portal institucional para qualquer visitante sem necessidade de login. Exibe a apresentação de como o sistema funciona e a descrição dos perfis de acesso.
+
+### Como atualizar o texto da Ajuda
+Todo o conteúdo textual e as etapas estão desacoplados dos componentes de interface e centralizados no arquivo de dados:
+- **Caminho:** `src/content/help.ts`
+
+Para atualizar o conteúdo:
+1. Abra o arquivo `src/content/help.ts`.
+2. Localize a seção desejada dentro da constante `HELP_SECTIONS` (ex.: `como-funciona`, `editor-como-publicar`, `mensagens-de-erro`, `perguntas-frequentes`).
+3. Modifique o texto nos campos `content`, `steps` ou `subItems` conforme necessário.
+4. Para ajustar quais papéis têm permissão para visualizar determinada seção, edite o array `allowedRoles` (valores suportados: `'VISITOR'`, `'EDITOR'`, `'ADMIN'`).
+5. A filtragem é realizada no servidor através da função `getHelpSectionsForRole(role)`, sem exigir alteração em nenhum componente visual.
+
+---
+
 ## ✅ Verificação dos Critérios de Aceite
 
 | # | Critério de Aceite | Status | Como Validar |
@@ -340,4 +363,5 @@ Envie uma solicitação à STI com as seguintes definições:
 | **11** | CRUD completo de membros no painel administrativo com upload e pré-visualização circular | **Aprovado** | Acesse `/admin/equipe`; cadastre, edite, ordene e ative/desative membros com pré-visualização em tempo real do formato circular. |
 | **12** | Posicionamento da seção de equipe configurável pelo painel | **Aprovado** | Em `/admin/configuracoes` -> aba "Seção 'Sobre' na Home", altere a posição entre após o sobre, antes do sobre, após o carrossel ou ocultar. |
 | **13** | Funcionalidades existentes (carrossel, notícias, páginas, rodapé) continuam 100% intactas | **Aprovado** | Todas as rotas públicas e administrativas continuam respondendo HTTP 200 OK sem alterações em dados pré-existentes. |
+| **14** | Seção de Ajuda por perfil no painel e na área pública sem emojis | **Aprovado** | Acesse `/admin/ajuda` com admin (vê tudo) ou editor (vê apenas notícias/regras de editor/erros); acesse `/ajuda` deslogado (vê apenas parte pública). |
 
