@@ -11,8 +11,10 @@ export function middleware(request: NextRequest) {
   const publicBaseUrl = process.env.PUBLIC_BASE_URL || '';
   const shouldRedirectHttps = forceHttps || (publicBaseUrl.startsWith('https://') && forwardedProto === 'http');
 
-  if (shouldRedirectHttps && forwardedProto === 'http') {
-    const host = forwardedHost || request.headers.get('host') || 'localhost';
+  const host = forwardedHost || request.headers.get('host') || 'localhost';
+  const isInternal = host.includes('127.0.0.1') || host.includes('localhost');
+
+  if (!isInternal && shouldRedirectHttps && forwardedProto === 'http') {
     const httpsUrl = new URL(request.nextUrl.pathname + request.nextUrl.search, `https://${host}`);
     return NextResponse.redirect(httpsUrl, 301);
   }
@@ -33,8 +35,8 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Interceptar rotas da aplicação, exceto recursos estáticos internos do Next.js
+     * Interceptar rotas da aplicação, exceto recursos estáticos e healthcheck
      */
-    '/((?!_next/static|_next/image|favicon.ico|images).*)',
+    '/((?!_next/static|_next/image|favicon.ico|images|api/health|soumaisuast/api/health).*)',
   ],
 };
