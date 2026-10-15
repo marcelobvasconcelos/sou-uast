@@ -32,5 +32,10 @@ npx prisma db push --skip-generate
 echo "Executando Seed inicial do portal..."
 node prisma/seed.js
 
-echo "Iniciando servidor Next.js em produção na porta 3000..."
-exec node server.js
+if [ -f "run-server.js" ]; then
+  echo "Iniciando servidor com gateway de compatibilidade de rotas (run-server.js)..."
+  exec node run-server.js
+else
+  echo "Iniciando servidor Next.js em produção na porta 3000..."
+  exec node server.js
+fi
